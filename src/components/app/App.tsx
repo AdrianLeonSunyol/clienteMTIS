@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { LoginService, ApiService, IService } from '../../services';
+import { LoginService } from '../../services';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -12,7 +12,6 @@ import {
 } from "react-router-dom";
 import {
   HomePage,
-  AboutPage,
   PageNotFound,
   NavBar,
   LoginPage,
@@ -28,18 +27,14 @@ import { RegisterPage } from '../RegisterPage';
 
 declare var M: any;
 
-/*
-import {
-  userIndex
-} from '../';*/
-
 class App extends React.Component<IAppProps, IAppState> {
   user_init = {
     _id: "",
     nombre: "",
     apellido: "",
     email: "",
-    tipo: ""
+    tipo: "",
+    direccion: ""
   }
   constructor(props: IAppProps) {
     super(props);
@@ -76,6 +71,10 @@ class App extends React.Component<IAppProps, IAppState> {
       })
   }
 
+  _onRegistro = (user: any) => {
+    console.log("ahhh, te quieres registrar ehh");
+  }
+
   _loadUser = async () => {
     await this.props.actions.loadUser();
     var user = JSON.parse(localStorage.getItem('user_data') || "");
@@ -96,7 +95,6 @@ class App extends React.Component<IAppProps, IAppState> {
             this.props.isAuthenticated &&
             <Switch>
               <Route exact path="/" component={HomePage} />
-              <Route exact path="/about" component={AboutPage} />
               <Route exact path="/login" render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />} />
               <Route exact path="/private" render={() => <PrivatePage user={this.state.user} servicios={this.props.servicios} />} />
               <Route exact component={PageNotFound} />
@@ -106,9 +104,8 @@ class App extends React.Component<IAppProps, IAppState> {
             !this.props.isAuthenticated &&
             <Switch>
               <Route exact path="/" component={HomePage} />
-              <Route exact path="/about" component={AboutPage} />
               <Route exact path="/login" render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />} />
-              <Route exact path="/registro" component={RegisterPage} />
+              <Route exact path="/registro" component={() => <RegisterPage registroUser={this._onRegistro} />} />
               <Route exact component={PageNotFound} />
             </Switch>
           }
@@ -120,7 +117,7 @@ class App extends React.Component<IAppProps, IAppState> {
 
 /**
  * What state should i expose as props?
- * @param state 
+ * @param state
  */
 function mapStateToProps(state: any) {
   return {
@@ -134,7 +131,7 @@ function mapStateToProps(state: any) {
 
 /**
 * What actions do i wont on props?
-* @param dispatch 
+* @param dispatch
 */
 function mapDispatchToProps(dispatch: any) {
   return {

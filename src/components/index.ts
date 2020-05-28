@@ -2,7 +2,6 @@ export * from './ErrorPages';
 export * from './HomePage';
 export * from './LoginPage';
 export * from './RegisterPage';
-export * from './About';
 export * from './Admin';
 export * from './navBar';
 export * from './user';

@@ -14,7 +14,7 @@ import CreateMedicos from "../crud/Users/medicos/createAndUpdate/createMedicos";
 import CreatePaciente from "../crud/Users/pacientes/createAndUpdate/createPaciente";
 
 
-import { UserFactory, Medico, Paciente, Centro, Admin } from '../../models';
+import { UserFactory, Medico, Usuario, Centro, Admin } from '../../models';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -25,7 +25,7 @@ import * as crudPacienteActions from "../../redux/components/crudPaciente/crudPa
 declare var M: any;
 
 class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
-  init_paciente: Paciente = {
+  init_paciente: Usuario = {
     _id: "",
     nombre: "",
     apellido: "",
@@ -33,7 +33,7 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
     tipo: "",
     dni: "",
     password: "",
-    centro: ""
+    direccion: ""
   }
   init_medico: Medico = {
     _id: "",
@@ -42,7 +42,8 @@ class AdminPage extends React.Component<IAdminPageProps, IAdminPageState> {
     email: "",
     tipo: "",
     centro: "",
-    password: ""
+    password: "",
+    direccion: ""
   }
 
   init_centro: Centro = {

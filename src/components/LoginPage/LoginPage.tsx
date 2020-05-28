@@ -64,7 +64,7 @@ export class LoginPage extends React.Component<ILoginPageProps, ILoginPageState>
             <br />
             <br />
             <br />
-
+            <br />
             <div className="container">
               <div className="row container container center">
                 <div className="card">

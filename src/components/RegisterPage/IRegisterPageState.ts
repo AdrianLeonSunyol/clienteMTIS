@@ -1,5 +1,5 @@
-import { Paciente } from "../../models";
+import { Usuario } from "../../models";
 
 export interface IRegisterPageState {
-    paciente: any
+  usuario: Usuario
 }

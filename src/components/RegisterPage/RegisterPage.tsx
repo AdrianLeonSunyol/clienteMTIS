@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IRegisterPageProps } from './IRegisterPageProps';
 import { IRegisterPageState } from './IRegisterPageState';
-import { Paciente, } from '../../models';
+import { Usuario } from '../../models';
 
 declare var M: any;
 
@@ -10,7 +10,7 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
     super(props);
 
     this.state = {
-      paciente: {
+      usuario: {
         _id: "",
         nombre: "",
         apellido: "",
@@ -31,13 +31,12 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
 
   _onCreateUser = (event: any) => {
     event.preventDefault();
-    if (this._isAmptyForm(this.state.paciente))
+    if (this._isAmptyForm(this.state.usuario))
       M.toast({
         html: "El formulario ha de estar completo!"
       });
     else {
-      //registro solo para usaurios
-      console.log("create user");
+      this.props.registroUser(this.state.usuario)
     }
   }
 
@@ -47,11 +46,11 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
     const name = target.name;
 
     const user = {
-      ...this.state.paciente,
+      ...this.state.usuario,
       [name]: value
     }
     this.setState({
-      paciente: user
+      usuario: user
     });
   }
 
@@ -77,28 +76,28 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
                 <form onSubmit={this._onCreateUser}>
                   <div className="row">
                     <div className="col s12 m6 input-field">
-                      <input type="text" placeholder="Name" name="nombre" onChange={this.handleChange} value={this.state.paciente.nombre} />
+                      <input type="text" placeholder="Name" name="nombre" onChange={this.handleChange} value={this.state.usuario.nombre} />
                     </div>
                     <div className="col s12 m6 input-field">
-                      <input type="text" placeholder="Apellidos" name="apellido" onChange={this.handleChange} value={this.state.paciente.apellido} />
-                    </div>
-                  </div>
-
-                  <div className="row">
-                    <div className="col s12 m6 input-field">
-                      <input type="email" placeholder="email" name="email" onChange={this.handleChange} value={this.state.paciente.email} />
-                    </div>
-                    <div className="col s12 m6 input-field">
-                      <input type="text" placeholder="dni" name="dni" onChange={this.handleChange} value={this.state.paciente.dni} />
+                      <input type="text" placeholder="Apellidos" name="apellido" onChange={this.handleChange} value={this.state.usuario.apellido} />
                     </div>
                   </div>
 
                   <div className="row">
                     <div className="col s12 m6 input-field">
-                      <input type="text" placeholder="direccion" name="direccion" onChange={this.handleChange} value={this.state.paciente.direccion} />
+                      <input type="email" placeholder="email" name="email" onChange={this.handleChange} value={this.state.usuario.email} />
                     </div>
                     <div className="col s12 m6 input-field">
-                      <input type="password" placeholder="password" name="password" onChange={this.handleChange} value={this.state.paciente.password} />
+                      <input type="text" placeholder="dni" name="dni" onChange={this.handleChange} value={this.state.usuario.dni} />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col s12 m6 input-field">
+                      <input type="text" placeholder="direccion" name="direccion" onChange={this.handleChange} value={this.state.usuario.direccion} />
+                    </div>
+                    <div className="col s12 m6 input-field">
+                      <input type="password" placeholder="password" name="password" onChange={this.handleChange} value={this.state.usuario.password} />
                     </div>
                   </div>
                   <div className="row">

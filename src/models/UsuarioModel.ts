@@ -1,26 +1,29 @@
 import { IUser } from "./interfaces/IUser";
 import { IModel } from "./interfaces";
 
-export class Medico implements IUser, IModel {
+export class Usuario implements IUser, IModel {
   _id: string;
   nombre: string;
   apellido: string;
   email: string;
+  dni: string;
   tipo: string;
-  centro: string | undefined;
   password: string | undefined;
   direccion: string;
+  //image: String;
 
   constructor(
     _id: string = "", nombre: string = "",
-    apellido: string = "", email: string = "", direccion: string = "",
-    tipo: string = "", centro?: string, password?: string) {
+    apellido: string = "", email: string = "",
+    dni: string = "", tipo: string = "",
+    password?: string, centro?: string,
+    direccion: string = "") {
     this._id = _id;
     this.nombre = nombre;
     this.apellido = apellido;
     this.email = email;
+    this.dni = dni;
     this.tipo = tipo;
-    this.centro = centro;
     this.password = password;
     this.direccion = direccion;
   }

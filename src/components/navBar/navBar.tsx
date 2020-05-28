@@ -41,7 +41,6 @@ export class NavBar extends React.Component<INavBarProps, {}> {
               !this.props.isAuthenticated &&
               <ul className="right hide-on-med-and-down">
                 <li>{<NavLink to="/" exact>Home</NavLink>}</li>
-                <li>{<NavLink to="/about" exact>About</NavLink>}</li>
                 <li>{<NavLink to="/login" exact>Login</NavLink>}</li>
                 <li>{<NavLink to="/registro" exact>Registro</NavLink>}</li>
               </ul>

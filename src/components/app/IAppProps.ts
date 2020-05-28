@@ -1,5 +1,5 @@
 import { LoginService, IService } from "../../services";
-import { IUser, Medico, Paciente, Centro } from "../../models";
+import { IUser, Medico, Usuario, Centro } from "../../models";
 
 export interface IAppProps {
   isAuthenticated;

@@ -1,10 +1,10 @@
-import { Paciente, Centro, Medico, IUser } from "../../models";
+import { Usuario, Centro, Medico, IUser } from "../../models";
 
 export interface IAdminPageState {
-    centros: Centro[];
-    pacientes: Paciente[];
-    medicos: Medico[];
-    usuario: IUser;
-    centro: Centro;
-    loadCentros: Boolean;
+  centros: Centro[];
+  pacientes: Usuario[];
+  medicos: Medico[];
+  usuario: IUser;
+  centro: Centro;
+  loadCentros: Boolean;
 }
