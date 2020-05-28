@@ -30,7 +30,8 @@ export class LoginService {
           apellido: "leon suñol",
           email: "adrian@gmail.com",
           tipo: "admin",
-          password: "adrian"
+          password: "adrian",
+          cp_seguridad: "codSeguro",
         },
         tipo: "admin",
       })
@@ -61,7 +62,8 @@ export class LoginService {
           apellido: "leon suñol",
           email: "adrian@gmail.com",
           tipo: "admin",
-          password: "adrian"
+          password: "adrian",
+          cp_seguridad: "codSeguro",
         },
         tipo: "admin",
       })

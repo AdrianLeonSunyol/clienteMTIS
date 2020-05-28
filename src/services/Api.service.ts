@@ -39,14 +39,14 @@ export class ApiService implements IService {
           nombre: "adrian",
           apellido: "leon suñol",
           email: "adrian@gmail.com",
-          tipo: "admin",
+          tipo: "usuario",
           password: "adrian",
           cp: "cp",
           fechaNacimiento: "fechaNacimiento",
           provincia: "provincia",
           localidad: "licalidad"
         },
-        tipo: "admin",
+        tipo: "usuario",
       })
     })
     //return fetch(`${this.HTTP_URI}/${id}`, {
