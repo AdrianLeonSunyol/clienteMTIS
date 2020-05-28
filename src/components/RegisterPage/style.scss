@@ -1,0 +1,42 @@
+#image {
+  height: 100vh;
+  background-image: url(https://s1.1zoom.me/big0/318/Marinas_Evening_Ships_Container_ship_553210_1280x884.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#search {
+  display: inline-block;
+  position: relative;
+  top: 50%;
+  width: 50vh;
+  /* bring your own prefixes */
+}
+
+.input-field label {
+  color: #000;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+  color: #000;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+  border-bottom: 1px solid #000;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* valid color */
+.input-field input[type=text].valid {
+  border-bottom: 1px solid #000;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+  border-bottom: 1px solid #000;
+  box-shadow: 0 1px 0 0 #000;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+  color: #000;
+}
+    

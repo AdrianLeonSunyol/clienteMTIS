@@ -52,49 +52,59 @@ export class LoginPage extends React.Component<ILoginPageProps, ILoginPageState>
 
   render(): React.ReactElement {
     return (
-      <div className="container">
+      <div id="image">
         {!this.props.isAuthenticated &&
           <div className="container">
-            <div className="row container center">
-              <br />
-              <br />
-              <div className="card">
-                <br />
-                <br />
-                <div className="card-title">Login</div>
-                <div className="card-content">
-                  <div className="row">
-                    <form className="col s12" onSubmit={this._onLoginUser}>
-                      <div className="row">
-                        <div className="input-field col s12">
-                          <i className="material-icons prefix">account_circle</i>
-                          <input name="email" id="email" type="email" className="validate" onChange={this.handleChange} />
-                          <label htmlFor="email">Email</label>
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+
+            <div className="container">
+              <div className="row container container center">
+                <div className="card">
+                  <br />
+                  <div className="card-title">Login</div>
+                  <br />
+                  <div className="card-content">
+                    <div className="row">
+                      <form className="col s12" onSubmit={this._onLoginUser}>
+                        <div className="row">
+                          <div className="input-field col s12">
+                            <i className="material-icons prefix">account_circle</i>
+                            <input name="email" id="email" type="email" className="validate" onChange={this.handleChange} />
+                            <label htmlFor="email">Email</label>
+                          </div>
                         </div>
-                      </div>
-                      <div className="row">
-                        <div className="input-field col s12">
-                          <i className="material-icons prefix">account_circle</i>
-                          <input name="password" id="password" type="password" className="validate" onChange={this.handleChange} />
-                          <label htmlFor="password">Password</label>
+                        <div className="row">
+                          <div className="input-field col s12">
+                            <i className="material-icons prefix">account_circle</i>
+                            <input name="password" id="password" type="password" className="validate" onChange={this.handleChange} />
+                            <label htmlFor="password">Password</label>
+                          </div>
                         </div>
-                      </div>
-                      <div className="row">
-                        <div className="col s6">
-                          <p>
-                            <label>
-                              <input type="checkbox" defaultChecked={true} />
-                              <span>Remember me</span>
-                            </label>
-                          </p>
-                        </div>
-                        <div className="col s6">
-                          <button className="btn waves-effect waves-light">Log In
+                        <div className="row">
+                          <div className="col s6">
+                            <p>
+                              <label>
+                                <input type="checkbox" defaultChecked={true} />
+                                <span>Remember me</span>
+                              </label>
+                            </p>
+                          </div>
+                          <div className="col s6">
+                            <button className="btn waves-effect waves-light">Log In
                                                     <i className="material-icons right">send</i>
-                          </button>
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    </form>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
