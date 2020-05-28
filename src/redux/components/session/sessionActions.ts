@@ -9,39 +9,17 @@ import {
   LOAD_USER_FAILURE,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS
-  //LOGOUT_FAILURE,
-  //LOCK_ERROR,
-  //LOCK_SUCCESS,
-  //SHOW_LOCK
 } from "../../";
 import { ApiServiceFactory } from "../../../services/ApiServiceFactory";
-
-/*function showLock() {
-   return {
-     type: SHOW_LOCK
-   }
- }
- 
- function lockSuccess(profile) {
-   return {
-     type: LOCK_SUCCESS,
-     profile
-   }
- }
- 
- function lockError(err) {
-   return {
-     type: LOCK_ERROR,
-     err
-   }
- }*/
+import { Usuario } from "../../../models";
+import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE } from "../../types";
 
 function requestLoadUser() {
   return {
     type: LOAD_USER_REQUEST,
     message: "Petición de carga de usuario de sesión",
     user: false
-  }
+  };
 }
 
 function receiveLoadUser(servicios: service[]) {
@@ -50,7 +28,7 @@ function receiveLoadUser(servicios: service[]) {
     user: true,
     message: 'Usuario cargado correctamente',
     servicios: servicios
-  }
+  };
 }
 
 function loadUserFailure(message: string) {
@@ -58,7 +36,7 @@ function loadUserFailure(message: string) {
     type: LOAD_USER_FAILURE,
     message: message,
     user: false
-  }
+  };
 }
 
 function requestLogin() {
@@ -70,20 +48,45 @@ function requestLogin() {
   };
 }
 
+function requestRegister() {
+  return {
+    type: REGISTER_REQUEST,
+    isFetching: true,
+    isAuthenticated: false,
+    message: "Petición de registro de usuario recibida"
+  };
+}
+
 function receiveLogin(message) {
   return {
     type: LOGIN_SUCCESS,
     isFetching: false,
     isAuthenticated: true,
     message: message
-    //id_token: user.token,
-    //tipo: user.tipo
+  };
+}
+
+function receiveRegister(message) {
+  return {
+    type: REGISTER_SUCCESS,
+    isFetching: false,
+    isAuthenticated: true,
+    message: message
   };
 }
 
 function loginError(message) {
   return {
     type: LOGIN_FAILURE,
+    isFetching: false,
+    isAuthenticated: false,
+    message: message
+  };
+}
+
+function registerError(message) {
+  return {
+    type: REGISTER_FAILURE,
     isFetching: false,
     isAuthenticated: false,
     message: message
@@ -139,6 +142,30 @@ export function loginUser(login: LoginService, email: string, password: string) 
   }
 }
 
+export function registerUser(login: LoginService, user: Usuario) {
+  return function (dispatch) {
+    dispatch(requestRegister());
+    return login.registroUser(user)
+      .then(res => {
+        if (res.status !== 200 && res.status !== 304) {
+          dispatch(registerError(res.message));
+        }
+        else {
+          localStorage.setItem('email', res.user.email);
+          localStorage.setItem('token', res.token);
+          localStorage.setItem('user', res.user);
+          localStorage.setItem('tipo', res.tipo);
+          dispatch(receiveRegister(res.message));
+        }
+      })
+      .catch(error => {
+        dispatch(registerError(error.message));
+        console.log("Error: ", error);
+        //throw error;
+      });
+  }
+}
+
 export function logoutUser() {
   return dispatch => {
     dispatch(requestLogout());
@@ -157,29 +184,18 @@ export function loadUser() {
     servicio: ApiServiceFactory.createApiService(localStorage.getItem('tipo') || ""),
     tipo: localStorage.getItem('tipo') || ""
   };
-
   servicios.push(new_service);
-
-  /**
-   * En cuanto crezcamos tendremos que crear un servicio por cada endpoint de la api
-   */
   if (localStorage.getItem('tipo') === 'admin') {
     var new_service: service = {
-      servicio: ApiServiceFactory.createApiService("medico"),
-      tipo: "medico"
-    }
+      servicio: ApiServiceFactory.createApiService("repartidor"),
+      tipo: "repartidor"
+    };
     servicios.push(new_service);
     var new_service1: service = {
-      servicio: ApiServiceFactory.createApiService("paciente"),
-      tipo: "paciente"
-    }
+      servicio: ApiServiceFactory.createApiService("transportista"),
+      tipo: "transportista"
+    };
     servicios.push(new_service1);
-
-    var new_service2: service = {
-      servicio: ApiServiceFactory.createApiService("centro"),
-      tipo: "centro"
-    }
-    servicios.push(new_service2);
   }
 
   return function (dispatch) {
@@ -201,5 +217,7 @@ export function loadUser() {
       });
   }
 }
+
+
 
 

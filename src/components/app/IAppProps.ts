@@ -1,5 +1,5 @@
 import { LoginService, IService } from "../../services";
-import { IUser, Medico, Usuario, Centro } from "../../models";
+import { IUser, Usuario } from "../../models";
 
 export interface IAppProps {
   isAuthenticated;
@@ -9,7 +9,8 @@ export interface IAppProps {
   servicios: { servicio: IService, tipo: string }[];
   actions: {
     loginUser(login: LoginService, email: string, password: string);
+    registerUser(login: LoginService, user: Usuario);
     logoutUser();
     loadUser();
-  }
+  };
 }

@@ -1,15 +1,11 @@
 import { combineReducers } from "redux";
 import {
   sessionReducer,
-  crudMedicoReducer,
-  crudCentroReducer,
-  crudPacienteReducer
+  crudPaqueteReducer
 } from "./components";
 
 export const rootReducer = combineReducers({
   sessionReducer,
-  crudMedicoReducer,
-  crudCentroReducer,
-  crudPacienteReducer
+  crudPaqueteReducer
 });
 

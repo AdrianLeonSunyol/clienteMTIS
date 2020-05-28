@@ -34,7 +34,13 @@ class App extends React.Component<IAppProps, IAppState> {
     apellido: "",
     email: "",
     tipo: "",
-    direccion: ""
+    direccion: "",
+    localidad: "",
+    cp: "",
+    fechaNacimiento: "",
+    dni: "",
+    password: "",
+    provincia: ""
   }
   constructor(props: IAppProps) {
     super(props);
@@ -72,7 +78,14 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   _onRegistro = (user: any) => {
-    console.log("ahhh, te quieres registrar ehh");
+    this.props.actions.registerUser(this.state.login, user)
+      .then((res) => {
+        console.log(res);
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   _loadUser = async () => {

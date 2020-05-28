@@ -40,7 +40,11 @@ export class ApiService implements IService {
           apellido: "leon suñol",
           email: "adrian@gmail.com",
           tipo: "admin",
-          password: "adrian"
+          password: "adrian",
+          cp: "cp",
+          fechaNacimiento: "fechaNacimiento",
+          provincia: "provincia",
+          localidad: "licalidad"
         },
         tipo: "admin",
       })

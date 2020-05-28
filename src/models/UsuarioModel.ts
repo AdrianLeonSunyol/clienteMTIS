@@ -6,25 +6,32 @@ export class Usuario implements IUser, IModel {
   nombre: string;
   apellido: string;
   email: string;
-  dni: string;
   tipo: string;
   password: string | undefined;
   direccion: string;
-  //image: String;
+  fechaNacimiento: string;
+  provincia: string;
+  localidad: string;
+  cp: string;
 
   constructor(
     _id: string = "", nombre: string = "",
     apellido: string = "", email: string = "",
-    dni: string = "", tipo: string = "",
+    tipo: string = "",
     password?: string, centro?: string,
-    direccion: string = "") {
+    direccion: string = "", fechaNacimiento: string = "",
+    provincia: string = "", cp: string = "", localidad: string = ""
+  ) {
     this._id = _id;
     this.nombre = nombre;
     this.apellido = apellido;
     this.email = email;
-    this.dni = dni;
     this.tipo = tipo;
     this.password = password;
     this.direccion = direccion;
+    this.fechaNacimiento = fechaNacimiento;
+    this.provincia = provincia;
+    this.cp = cp;
+    this.localidad = localidad;
   }
 }

@@ -15,16 +15,30 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
         nombre: "",
         apellido: "",
         email: "",
-        dni: "",
         password: "",
         direccion: "",
-        tipo: ""
+        tipo: "",
+        fechaNacimiento: "",
+        provincia: "",
+        localidad: "",
+        cp: ""
       }
     }
   }
 
   _isAmptyForm = (user: any): boolean => {
-    return (user.nombre === "", user.direccion === "" || user.dni === "" || user.email === "" || user.apellido === "" || user.password === "")
+    return (
+      user.nombre === "" ||
+      user.direccion === "" ||
+      user.localidad === "" ||
+      user.fechaNacimiento === "" ||
+      user.cp === "" ||
+      user.localidad === "" ||
+      user.provincia === "" ||
+      user.email === "" ||
+      user.apellido === "" ||
+      user.password === ""
+    )
       ? true
       : false;
   }
@@ -64,10 +78,6 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
           <br />
           <br />
           <br />
-          <br />
-          <br />
-          <br />
-          <br />
           <div className="container">
             <div className="card">
               <br />
@@ -88,7 +98,7 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
                       <input type="email" placeholder="email" name="email" onChange={this.handleChange} value={this.state.usuario.email} />
                     </div>
                     <div className="col s12 m6 input-field">
-                      <input type="text" placeholder="dni" name="dni" onChange={this.handleChange} value={this.state.usuario.dni} />
+                      <input type="password" placeholder="Contraseña" name="password" onChange={this.handleChange} value={this.state.usuario.password} />
                     </div>
                   </div>
 
@@ -97,7 +107,22 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
                       <input type="text" placeholder="direccion" name="direccion" onChange={this.handleChange} value={this.state.usuario.direccion} />
                     </div>
                     <div className="col s12 m6 input-field">
-                      <input type="password" placeholder="password" name="password" onChange={this.handleChange} value={this.state.usuario.password} />
+                      <input type="text" placeholder="localidad" name="localidad" onChange={this.handleChange} value={this.state.usuario.localidad} />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col s12 m6 input-field">
+                      <input type="text" placeholder="provincia" name="provincia" onChange={this.handleChange} value={this.state.usuario.provincia} />
+                    </div>
+                    <div className="col s12 m6 input-field">
+                      <input type="text" placeholder="cp" name="cp" onChange={this.handleChange} value={this.state.usuario.cp} />
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col s12 m12 input-field">
+                      <input type="text" placeholder="fecha de Nacimiento" name="fechaNacimiento" onChange={this.handleChange} value={this.state.usuario.fechaNacimiento} />
                     </div>
                   </div>
                   <div className="row">

@@ -8,9 +8,11 @@ import {
   LOGOUT_REQUEST,
   LOAD_USER_FAILURE,
   LOAD_USER_REQUEST,
-  LOAD_USER_SUCCESS
+  LOAD_USER_SUCCESS,
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE
 } from "../../types";
-
 
 /**
  * Remember
@@ -41,8 +43,14 @@ export function sessionReducer(state = sessionState, action: any) {
         message: action.message,
         servicios: action.servicios
       }
-    }
+    };
     case LOGIN_REQUEST:
+      return {
+        isFetching: action.isFetching,
+        isAuthenticated: action.isAuthenticated,
+        message: action.message
+      };
+    case REGISTER_REQUEST:
       return {
         isFetching: action.isFetching,
         isAuthenticated: action.isAuthenticated,
@@ -54,7 +62,19 @@ export function sessionReducer(state = sessionState, action: any) {
         isAuthenticated: action.isAuthenticated,
         message: action.message
       };
+    case REGISTER_SUCCESS:
+      return {
+        isFetching: action.isFetching,
+        isAuthenticated: action.isAuthenticated,
+        message: action.message
+      };
     case LOGIN_FAILURE:
+      return {
+        isFetching: false,
+        isAuthenticated: false,
+        message: action.message
+      };
+    case REGISTER_FAILURE:
       return {
         isFetching: false,
         isAuthenticated: false,
