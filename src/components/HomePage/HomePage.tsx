@@ -1,24 +1,59 @@
 import * as React from 'react';
+import './style.scss';
 
-export class HomePage extends React.Component {
-    render(): React.ReactElement {
-        return (
-               <div className="row">
-                   <div className="col s12">
-                        <div className="parallax-container">
-                            <div className="parallax"><img src="https://www.sinhumo-sevilla.net/img/cms/1_7.jpg"/></div>
-                        </div>
-                        <div className="section white">
-                            <div className="container">
-                                <h2 className="header">Centro Médico</h2>
-                                <p className="grey-text text-darken-3 lighten-3">En nuestro centro médico contamos con los mejores profiesionales y la mejor asistencia técnica!</p>
-                            </div>
-                        </div>
-                        <div className="parallax-container">
-                            <div className="parallax"><img src="https://www.sinhumo-sevilla.net/img/cms/1_7.jpg"/></div>
-                        </div>
-                   </div>
-               </div>
-        )
-    }
+
+export interface IHomeState {
+  paquete: string;
+}
+
+export class HomePage extends React.Component<{}, IHomeState> {
+
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      paquete: ""
+    };
+  }
+
+  localizarPaquete = (event: any) => {
+    event.preventDefault();
+    alert("tenemos en pasar a seguimiento")
+  }
+
+  _onHandleChange = (event: any) => {
+    const target = event.target;
+    const value = target.value;
+
+    this.setState({
+      paquete: value
+    });
+  }
+
+  render(): React.ReactElement {
+    return (
+      <div id="image">
+        <div className="row" id="search">
+          <div className="s12">
+            <div>
+              <form onSubmit={this.localizarPaquete}>
+                <div className="row">
+                  <div className="input-field col s8">
+                    <input id="seguimiento" type="text" className="validate" onChange={this._onHandleChange} />
+                    <label htmlFor="seguimiento">ID Seguimiento</label>
+                  </div>
+                  <br />
+                  <div className="col s4 center">
+                    <button className="btn waves-effect waves-light #1a237e indigo darken-4">Buscar
+                      <i className="material-icons right">send</i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div >
+      </div >
+    )
+  }
 }

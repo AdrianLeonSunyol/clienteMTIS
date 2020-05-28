@@ -1,6 +1,6 @@
 import { UserOperationCallback } from "../../models";
 
 export interface ILoginPageProps {
-    isAuthenticated;
-    loginUser: UserOperationCallback;
+  isAuthenticated;
+  loginUser: UserOperationCallback;
 }

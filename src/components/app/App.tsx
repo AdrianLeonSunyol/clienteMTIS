@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as sessionActions from "../../redux/components/session/sessionActions";
-import { 
+import {
   Route,
   Switch,
   //Redirect
@@ -19,12 +19,13 @@ import {
   PrivatePage
 } from '../';
 
-import { 
+import {
   IAppProps,
   IAppState
- } from ".";
+} from ".";
 import { UserFactory } from '../../models';
- 
+import { RegisterPage } from '../RegisterPage';
+
 declare var M: any;
 
 /*
@@ -45,12 +46,12 @@ class App extends React.Component<IAppProps, IAppState> {
     this.state = {
       login: new LoginService(),
       user: this.user_init
-    }    
+    }
   }
 
   componentDidMount() {
     M.AutoInit();
-    
+
     if (this.props.isAuthenticated) { //need this check
       this._loadUser();
     }
@@ -65,13 +66,10 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   _onLogin = (user: any) => {
-      this.props.actions.loginUser(this.state.login, user.email, user.password)
+    this.props.actions.loginUser(this.state.login, user.email, user.password)
       .then((res) => {
-        window.location.href="/";
-        //console.log("hello");
-        /*if (this.props.isAuthenticated) { //need this check
-          this._loadUser();
-        }*/
+        console.log(res);
+        window.location.href = "/";
       })
       .catch(err => {
         console.log(err);
@@ -80,44 +78,44 @@ class App extends React.Component<IAppProps, IAppState> {
 
   _loadUser = async () => {
     await this.props.actions.loadUser();
-    var user = JSON.parse(localStorage.getItem('user_data') || "");      
+    var user = JSON.parse(localStorage.getItem('user_data') || "");
     this.setState({
       user: UserFactory.getInstance(localStorage.getItem('tipo') || "", user)
     });
   }
 
   public render() {
-    return (       
-        <div>
-            <NavBar 
-              isAuthenticated={this.props.isAuthenticated}
-              onLogout={ this._onLogout }
-            />
-            <div className="container center">
-              {
-                this.props.isAuthenticated &&
-                <Switch>
-                  <Route exact path="/"  component={HomePage}/>
-                  <Route exact path="/about" component={AboutPage} />
-                  <Route exact path="/login"  render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />}/>
-                  <Route exact path="/private" render={() => <PrivatePage user={this.state.user} servicios={this.props.servicios}/>}/>   
-                  <Route exact component={PageNotFound} />
-                </Switch>
-              } 
-              {
-                !this.props.isAuthenticated &&
-                <Switch>
-                    <Route exact path="/"  component={HomePage}/>
-                    <Route exact path="/about" component={AboutPage} />
-                    <Route exact path="/login"  render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />}/>
-                    <Route exact component={PageNotFound} />
-                </Switch>
-              }
-            
-            </div>
+    return (
+      <div>
+        <NavBar
+          isAuthenticated={this.props.isAuthenticated}
+          onLogout={this._onLogout}
+        />
+        <div className="center">
+          {
+            this.props.isAuthenticated &&
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/about" component={AboutPage} />
+              <Route exact path="/login" render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />} />
+              <Route exact path="/private" render={() => <PrivatePage user={this.state.user} servicios={this.props.servicios} />} />
+              <Route exact component={PageNotFound} />
+            </Switch>
+          }
+          {
+            !this.props.isAuthenticated &&
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/about" component={AboutPage} />
+              <Route exact path="/login" render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />} />
+              <Route exact path="/registro" component={RegisterPage} />
+              <Route exact component={PageNotFound} />
+            </Switch>
+          }
         </div>
+      </div>
     );
-  } 
+  }
 }
 
 /**
@@ -140,7 +138,7 @@ function mapStateToProps(state: any) {
 */
 function mapDispatchToProps(dispatch: any) {
   return {
-      actions: bindActionCreators(sessionActions, dispatch)
+    actions: bindActionCreators(sessionActions, dispatch)
   }
 }
 

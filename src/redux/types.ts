@@ -68,7 +68,7 @@ interface readUsersAction {
 }
 
 
-export type UserActionTypes = 
+export type UserActionTypes =
     createUserAction |
     deleteUserAction |
     updateUserAction |
