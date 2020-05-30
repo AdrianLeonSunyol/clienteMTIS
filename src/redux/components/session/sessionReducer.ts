@@ -27,6 +27,7 @@ export function sessionReducer(state = sessionState, action: any) {
         ...state,
         message: action.message,
         user: action.user,
+        efectiveDone: action.efectiveDone,
         servicios: []
       }
     case LOAD_USER_REQUEST:
@@ -34,6 +35,7 @@ export function sessionReducer(state = sessionState, action: any) {
         ...state,
         message: action.message,
         user: action.user,
+        efectiveDone: action.efectiveDone,
         servicios: []
       }
     case LOAD_USER_SUCCESS: {
@@ -41,43 +43,51 @@ export function sessionReducer(state = sessionState, action: any) {
         ...state,
         user: action.user,
         message: action.message,
+        efectiveDone: action.efectiveDone,
         servicios: action.servicios
       }
     };
+    //sessions
     case LOGIN_REQUEST:
       return {
         isFetching: action.isFetching,
         isAuthenticated: action.isAuthenticated,
+        efectiveDone: action.efectiveDone,
         message: action.message
       };
     case REGISTER_REQUEST:
       return {
         isFetching: action.isFetching,
         isAuthenticated: action.isAuthenticated,
+        efectiveDone: action.efectiveDone,
         message: action.message
       };
     case LOGIN_SUCCESS:
       return {
         isFetching: action.isFetching,
         isAuthenticated: action.isAuthenticated,
+        efectiveDone: action.efectiveDone,
         message: action.message
       };
     case REGISTER_SUCCESS:
       return {
         isFetching: action.isFetching,
         isAuthenticated: action.isAuthenticated,
+        efectiveDone: action.efectiveDone,
         message: action.message
       };
     case LOGIN_FAILURE:
       return {
         isFetching: false,
         isAuthenticated: false,
+        efectiveDone: action.efectiveDone,
         message: action.message
       };
     case REGISTER_FAILURE:
       return {
         isFetching: false,
         isAuthenticated: false,
+        efectiveDone: action.efectiveDone,
         message: action.message
       };
     case LOGOUT_REQUEST:
@@ -85,6 +95,7 @@ export function sessionReducer(state = sessionState, action: any) {
         isFetching: false,
         isAuthenticated: false,
         message: action.message,
+        efectiveDone: action.efectiveDone,
         servicios: []
       };
     case LOGOUT_SUCCESS:
@@ -92,6 +103,7 @@ export function sessionReducer(state = sessionState, action: any) {
         isFetching: true,
         isAuthenticated: false,
         message: action.message,
+        efectiveDone: action.efectiveDone,
         servicios: []
       };
     default:

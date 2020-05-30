@@ -18,6 +18,7 @@ function requestLoadUser() {
   return {
     type: LOAD_USER_REQUEST,
     message: "Petición de carga de usuario de sesión",
+    efectiveDone: false,
     user: false
   };
 }
@@ -27,6 +28,7 @@ function receiveLoadUser(servicios: service[]) {
     type: LOAD_USER_SUCCESS,
     user: true,
     message: 'Usuario cargado correctamente',
+    efectiveDone: true,
     servicios: servicios
   };
 }
@@ -34,6 +36,7 @@ function receiveLoadUser(servicios: service[]) {
 function loadUserFailure(message: string) {
   return {
     type: LOAD_USER_FAILURE,
+    efectiveDone: false,
     message: message,
     user: false
   };
@@ -44,6 +47,7 @@ function requestLogin() {
     type: LOGIN_REQUEST,
     isFetching: true,
     isAuthenticated: false,
+    efectiveDone: false,
     message: "Petición de inicio de sesión recibida"
   };
 }
@@ -53,6 +57,7 @@ function requestRegister() {
     type: REGISTER_REQUEST,
     isFetching: true,
     isAuthenticated: false,
+    efectiveDone: false,
     message: "Petición de registro de usuario recibida"
   };
 }
@@ -62,6 +67,7 @@ function receiveLogin(message) {
     type: LOGIN_SUCCESS,
     isFetching: false,
     isAuthenticated: true,
+    efectiveDone: true,
     message: message
   };
 }
@@ -71,6 +77,7 @@ function receiveRegister(message) {
     type: REGISTER_SUCCESS,
     isFetching: false,
     isAuthenticated: true,
+    efectiveDone: true,
     message: message
   };
 }
@@ -80,6 +87,7 @@ function loginError(message) {
     type: LOGIN_FAILURE,
     isFetching: false,
     isAuthenticated: false,
+    efectiveDone: false,
     message: message
   };
 }
@@ -89,6 +97,7 @@ function registerError(message) {
     type: REGISTER_FAILURE,
     isFetching: false,
     isAuthenticated: false,
+    efectiveDone: false,
     message: message
   };
 }
@@ -98,6 +107,7 @@ function requestLogout() {
     type: LOGOUT_REQUEST,
     isFetching: true,
     isAuthenticated: true,
+    efectiveDone: false,
     message: "Petición para cerrar sesión recibida"
   };
 }
@@ -107,6 +117,7 @@ function receiveLogout() {
     type: LOGOUT_SUCCESS,
     isFetching: false,
     isAuthenticated: false,
+    efectiveDone: true,
     message: "Sesión cerrada correctamente!"
   };
 }
@@ -131,14 +142,12 @@ export function loginUser(login: LoginService, email: string, password: string) 
           localStorage.setItem('user', res.user);
           localStorage.setItem('tipo', res.tipo);
           localStorage.setItem('sec', res.cp_seguridad);
-
           dispatch(receiveLogin(res.message));
         }
       })
       .catch(error => {
         dispatch(loginError(error.message));
         console.log("Error: ", error);
-        //throw error;
       });
   }
 }
@@ -163,7 +172,6 @@ export function registerUser(login: LoginService, user: Usuario) {
       .catch(error => {
         dispatch(registerError(error.message));
         console.log("Error: ", error);
-        //throw error;
       });
   }
 }

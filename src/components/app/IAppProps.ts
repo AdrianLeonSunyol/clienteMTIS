@@ -4,7 +4,8 @@ import { IUser, Usuario } from "../../models";
 export interface IAppProps {
   isAuthenticated;
   isAuthenticatedFirstTime;
-  errorMessage;
+  message;
+  efectiveDone;
   user: IUser;
   servicios: { servicio: IService, tipo: string }[];
   actions: {

@@ -58,34 +58,40 @@ class App extends React.Component<IAppProps, IAppState> {
     }
   }
 
-  _onLogout = () => {
-    this.props.actions.logoutUser();
-    this.setState({
-      user: this.user_init
-    });
-    window.location.href = "/";
-  }
-
-  _onLogin = (user: any) => {
-    this.props.actions.loginUser(this.state.login, user.email, user.password)
-      .then((res) => {
-        console.log(res);
-        window.location.href = "/";
-      })
-      .catch(err => {
-        console.log(err);
-      })
-  }
-
-  _onRegistro = (user: any) => {
-    this.props.actions.registerUser(this.state.login, user)
-      .then((res) => {
-        console.log(res);
-        window.location.href = "/";
-      })
-      .catch((err) => {
-        console.log(err);
+  _onLogout = async () => {
+    await this.props.actions.logoutUser();
+    if (this.props.efectiveDone) {
+      this.setState({
+        user: this.user_init
       });
+      window.location.href = "/";
+    } else {
+      M.toast({
+        html: this.props.message
+      });
+    }
+  }
+
+  _onLogin = async (user: any) => {
+    await this.props.actions.loginUser(this.state.login, user.email, user.password);
+    if (this.props.efectiveDone) {
+      window.location.href = "/";
+    } else {
+      M.toast({
+        html: this.props.message
+      });
+    }
+  }
+
+  _onRegistro = async (user: any) => {
+    await this.props.actions.registerUser(this.state.login, user)
+    if (this.props.efectiveDone) {
+      window.location.href = "/";
+    } else {
+      M.toast({
+        html: this.props.message
+      });
+    }
   }
 
   _loadUser = async () => {
@@ -109,6 +115,7 @@ class App extends React.Component<IAppProps, IAppState> {
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route exact path="/login" render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />} />
+              <Route exact path="/registro" component={() => <RegisterPage isAuthenticated={this.props.isAuthenticated} registroUser={this._onRegistro} />} />
               <Route exact path="/private" render={() => <PrivatePage user={this.state.user} servicios={this.props.servicios} />} />
               <Route exact component={PageNotFound} />
             </Switch>
@@ -118,7 +125,7 @@ class App extends React.Component<IAppProps, IAppState> {
             <Switch>
               <Route exact path="/" component={HomePage} />
               <Route exact path="/login" render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />} />
-              <Route exact path="/registro" component={() => <RegisterPage registroUser={this._onRegistro} />} />
+              <Route exact path="/registro" component={() => <RegisterPage isAuthenticated={this.props.isAuthenticated} registroUser={this._onRegistro} />} />
               <Route exact component={PageNotFound} />
             </Switch>
           }
@@ -137,8 +144,9 @@ function mapStateToProps(state: any) {
     user: state.sessionReducer.user,
     isFetching: state.sessionReducer.isFetching,
     isAuthenticated: state.sessionReducer.isAuthenticated,
-    errorMessage: state.sessionReducer.errorMessage,
-    servicios: state.sessionReducer.servicios
+    message: state.sessionReducer.message,
+    servicios: state.sessionReducer.servicios,
+    efectiveDone: state.sessionReducer.efectiveDone
   };
 }
 
