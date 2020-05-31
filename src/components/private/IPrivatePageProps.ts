@@ -1,7 +1,8 @@
-import { IUser } from "../../models";
+import { IUser, PaqueteOperationCallback } from "../../models";
 import { IService } from "../../services";
 
 export interface IPrivatePageProps {
-    user: IUser,
-    servicios: {servicio: IService, tipo: string}[]
+  user: IUser,
+  servicios: { servicio: IService, tipo: string }[]
+  seguimiento: PaqueteOperationCallback;
 }

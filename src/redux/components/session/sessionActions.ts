@@ -139,7 +139,7 @@ export function loginUser(login: LoginService, email: string, password: string) 
         else {
           localStorage.setItem('email', email);
           localStorage.setItem('token', res.token);
-          localStorage.setItem('user', res.user);
+          localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('tipo', res.tipo);
           localStorage.setItem('sec', res.cp_seguridad);
           dispatch(receiveLogin(res.message));
@@ -163,7 +163,7 @@ export function registerUser(login: LoginService, user: Usuario) {
         else {
           localStorage.setItem('email', res.user.email);
           localStorage.setItem('token', res.token);
-          localStorage.setItem('user', res.user);
+          localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('tipo', res.tipo);
           localStorage.setItem('sec', res.cp_seguridad);
           dispatch(receiveRegister(res.message));

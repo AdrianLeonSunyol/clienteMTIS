@@ -1,17 +1,26 @@
 import React from 'react'
 import { IPrivatePageProps } from './IPrivatePageProps'
+import PaquetesComponentUsuario from '../paquetes/PaquetesComponentUsuario';
+import { Paquete } from '../../models/PaqueteModel';
 
 export class PrivatePage extends React.Component<IPrivatePageProps, {}> {
   constructor(props: IPrivatePageProps) {
     super(props);
   }
 
+  _onSeguimientoPaqueteCallback = async (paquete: Paquete) => {
+    this.props.seguimiento(paquete);
+  }
+
   render(): React.ReactElement {
     return (
       <div>
         { //vista para usuario
-          this.props.user.tipo === "usuario" &&
-          <div>Vista para usuarios normales</div>
+          this.props.user.tipo == "usuario" &&
+          <PaquetesComponentUsuario
+            usuario={this.props.user}
+            seguimiento={this._onSeguimientoPaqueteCallback}
+          />
           //<AdminPage
           //  user={this.props.user}
           //  medico_service={this.props.servicios[1].servicio}
@@ -21,15 +30,15 @@ export class PrivatePage extends React.Component<IPrivatePageProps, {}> {
         }
 
         {
-          this.props.user.tipo === "transportista" &&
+          this.props.user.tipo == "transportista" &&
           <div>vista para transportista</div>
         }
         {
-          this.props.user.tipo === "repartidor" &&
+          this.props.user.tipo == "repartidor" &&
           <div>vista para repartidor</div>
         }
         {
-          this.props.user.tipo === "" &&
+          this.props.user.tipo == "" &&
           <div>No tienes authorización para estar aquí</div>
         }
       </div>

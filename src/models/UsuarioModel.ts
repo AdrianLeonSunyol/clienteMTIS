@@ -1,5 +1,7 @@
 import { IUser } from "./interfaces/IUser";
 import { IModel } from "./interfaces";
+import { IPackage } from "./interfaces/IPackage";
+import { Paquete } from "./PaqueteModel";
 
 export class Usuario implements IUser, IModel {
   _id: string;
@@ -7,18 +9,19 @@ export class Usuario implements IUser, IModel {
   apellido: string;
   email: string;
   tipo: string;
-  password: string | undefined;
+  password?: string;
   direccion: string;
   fechaNacimiento: string;
   provincia: string;
   localidad: string;
+  paquetes: IPackage[];
   cp: string;
 
   constructor(
     _id: string = "", nombre: string = "",
     apellido: string = "", email: string = "",
-    tipo: string = "",
-    password?: string, centro?: string,
+    tipo: string = "", paquetes: IPackage[] = [],
+    password?: string,
     direccion: string = "", fechaNacimiento: string = "",
     provincia: string = "", cp: string = "", localidad: string = ""
   ) {
@@ -33,5 +36,6 @@ export class Usuario implements IUser, IModel {
     this.provincia = provincia;
     this.cp = cp;
     this.localidad = localidad;
+    this.paquetes = paquetes;
   }
 }

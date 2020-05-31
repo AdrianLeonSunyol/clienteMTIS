@@ -1,14 +1,21 @@
 import * as React from 'react';
 import './style.scss';
+import { PaqueteOperationCallback } from '../../models';
 
 
 export interface IHomeState {
   paquete: string;
 }
 
-export class HomePage extends React.Component<{}, IHomeState> {
+export interface IHomeProps {
+  seguimiento: PaqueteOperationCallback;
+}
 
-  constructor(props: any) {
+declare var M: any;
+
+export class HomePage extends React.Component<IHomeProps, IHomeState> {
+
+  constructor(props: IHomeProps) {
     super(props);
 
     this.state = {
@@ -18,7 +25,12 @@ export class HomePage extends React.Component<{}, IHomeState> {
 
   localizarPaquete = (event: any) => {
     event.preventDefault();
-    alert("tenemos en pasar a seguimiento")
+    if (this.state.paquete == "") {
+      M.toast({
+        html: "Por favor, introduce un ID de seguimiento válido!"
+      });
+    } else
+      this.props.seguimiento(this.state.paquete)
   }
 
   _onHandleChange = (event: any) => {

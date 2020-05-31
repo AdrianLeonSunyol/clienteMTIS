@@ -3,6 +3,8 @@ import {
   handleError,
   handleResponse
 } from "./api";
+import { Paquete } from "../models/PaqueteModel";
+import { Estado } from "../models/EstadoEnum";
 
 /**
  * Servicio para las clases de usuario
@@ -11,6 +13,61 @@ import {
 export class LoginService {
   private HTTP_URI: string;
   private usuarios: Usuario[];
+
+  private paquetes: Paquete[] = [
+    {
+      _id: "1",
+      usuario_id: "1",
+      direccion_origen: "alicante",
+      direccion_destino: "madrid",
+      zona: "centro",
+      peso: 5,
+      alto: 10,
+      ancho: 10,
+      profundo: 15,
+      estado: Estado.DESPLAZAMIENTO,
+      asignado: true
+    },
+    {
+      _id: "2",
+      usuario_id: "1",
+      direccion_origen: "alicante",
+      direccion_destino: "Barcelona",
+      zona: "centro",
+      peso: 5,
+      alto: 10,
+      ancho: 10,
+      profundo: 15,
+      estado: Estado.EN_CENTRAL,
+      asignado: true
+    },
+    {
+      _id: "3",
+      usuario_id: "1",
+      direccion_origen: "alicante",
+      direccion_destino: "Baleares",
+      zona: "centro",
+      peso: 5,
+      alto: 10,
+      ancho: 10,
+      profundo: 15,
+      estado: Estado.PENDIENTE_RECOGER,
+      asignado: true
+    },
+    {
+      _id: "4",
+      usuario_id: "1",
+      direccion_origen: "alicante",
+      direccion_destino: "Valencia",
+      zona: "centro",
+      peso: 5,
+      alto: 10,
+      ancho: 10,
+      profundo: 15,
+      estado: Estado.SIN_ASIGNAR,
+      asignado: true
+    }
+  ]
 
   constructor() {
     const api_host = process.env.HOSTAPI || "localhost";
@@ -22,6 +79,7 @@ export class LoginService {
   }
 
   loginUser = (email: string, password: string) => {
+
     return new Promise<any>((resolve, reject) => {
       if (email != "") {
         if (password == "adrian" && email == "adrian@gmail.com") {
@@ -29,7 +87,7 @@ export class LoginService {
             status: 200,
             token: "token",
             user: {
-              _id: "",
+              _id: "1",
               nombre: "adrian",
               apellido: "leon suño.",
               email: email,
@@ -39,6 +97,7 @@ export class LoginService {
               provincia: "alicante",
               localidad: "alicante",
               cp: "03003",
+              paquetes: this.paquetes,
             },
             tipo: "usuario",
           })
@@ -84,6 +143,7 @@ export class LoginService {
         provincia: usuario.provincia,
         localidad: usuario.localidad,
         cp: usuario.cp,
+        paquetes: this.paquetes
       }
       this.usuarios.push(usuario);
       resolve({

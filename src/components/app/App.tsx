@@ -24,6 +24,8 @@ import {
 } from ".";
 import { UserFactory } from '../../models';
 import { RegisterPage } from '../RegisterPage';
+import SeguimientoComponent from '../Seguimiento/SeguimientoComponent';
+import { Estado } from '../../models/EstadoEnum';
 
 declare var M: any;
 
@@ -40,13 +42,30 @@ class App extends React.Component<IAppProps, IAppState> {
     fechaNacimiento: "",
     dni: "",
     password: "",
-    provincia: ""
+    provincia: "",
+    paquetes: [],
   }
+
+  paquete_init = {
+    _id: "",
+    usuario_id: "",
+    direccion_origen: "",
+    direccion_destino: "",
+    zona: "",
+    peso: 0,
+    alto: 0,
+    ancho: 0,
+    profundo: 5,
+    estado: Estado.SIN_ASIGNAR,
+    asignado: false
+  }
+
   constructor(props: IAppProps) {
     super(props);
     this.state = {
       login: new LoginService(),
-      user: this.user_init
+      user: this.user_init,
+      paquete: this.paquete_init,
     }
   }
 
@@ -95,11 +114,51 @@ class App extends React.Component<IAppProps, IAppState> {
   }
 
   _loadUser = async () => {
-    await this.props.actions.loadUser();
-    var user = JSON.parse(localStorage.getItem('user_data') || "");
+    //await this.props.actions.loadUser();
+    var user = JSON.parse(localStorage.getItem('user') || "");
     this.setState({
       user: UserFactory.getInstance(localStorage.getItem('tipo') || "", user)
     });
+  }
+
+  _onSeguimiento = async (paquete: any) => {
+    if (typeof paquete == "string") {
+      console.log("es un id ");
+      alert("vamos a trabajar aquí");
+      //llamar a redux con una action de get paquete
+      //actualizar el estado
+      //y navegar al componente seguimeinto
+
+    } else {
+      console.log("es un paquete");
+      this.setState({
+        paquete: {
+          _id: "4",
+          usuario_id: "1",
+          direccion_origen: "alicante",
+          direccion_destino: "Valencia",
+          zona: "centro",
+          peso: 5,
+          alto: 10,
+          ancho: 10,
+          profundo: 15,
+          estado: Estado.SIN_ASIGNAR,
+          asignado: true
+        }
+      });
+    }
+    //this._navigateTo("seguimiento");
+  }
+
+  _navigateTo = (destino: string) => {
+    switch (destino) {
+      case "seguimiento":
+        window.location.href = "/seguimiento";
+        break;
+
+      default:
+        break;
+    }
   }
 
   public render() {
@@ -113,19 +172,21 @@ class App extends React.Component<IAppProps, IAppState> {
           {
             this.props.isAuthenticated &&
             <Switch>
-              <Route exact path="/" component={HomePage} />
+              <Route exact path="/" render={() => <HomePage seguimiento={this._onSeguimiento} />} />
               <Route exact path="/login" render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />} />
               <Route exact path="/registro" component={() => <RegisterPage isAuthenticated={this.props.isAuthenticated} registroUser={this._onRegistro} />} />
-              <Route exact path="/private" render={() => <PrivatePage user={this.state.user} servicios={this.props.servicios} />} />
+              <Route exact path="/private" render={() => <PrivatePage seguimiento={this._onSeguimiento} user={this.state.user} servicios={this.props.servicios} />} />
+              <Route exact path="/seguimiento" render={() => <SeguimientoComponent paquete={this.state.paquete} />} />
               <Route exact component={PageNotFound} />
             </Switch>
           }
           {
             !this.props.isAuthenticated &&
             <Switch>
-              <Route exact path="/" component={HomePage} />
+              <Route exact path="/" render={() => <HomePage seguimiento={this._onSeguimiento} />} />
               <Route exact path="/login" render={() => <LoginPage isAuthenticated={this.props.isAuthenticated} loginUser={this._onLogin} />} />
               <Route exact path="/registro" component={() => <RegisterPage isAuthenticated={this.props.isAuthenticated} registroUser={this._onRegistro} />} />
+              <Route exact path="/seguimiento" render={() => <SeguimientoComponent paquete={this.state.paquete} />} />
               <Route exact component={PageNotFound} />
             </Switch>
           }

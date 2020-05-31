@@ -44,7 +44,8 @@ export class ApiService implements IService {
           cp: "cp",
           fechaNacimiento: "fechaNacimiento",
           provincia: "provincia",
-          localidad: "licalidad"
+          localidad: "licalidad",
+          paquete: [],
         },
         tipo: "usuario",
       })

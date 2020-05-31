@@ -21,7 +21,8 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
         fechaNacimiento: "",
         provincia: "",
         localidad: "",
-        cp: ""
+        cp: "",
+        paquetes: []
       }
     }
   }
