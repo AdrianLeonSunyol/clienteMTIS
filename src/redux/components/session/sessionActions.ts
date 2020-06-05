@@ -167,7 +167,8 @@ export function loginUser(login: LoginService, email: string, password: string) 
     return login
       .loginUser(email, password)
       .then(res => {
-        if (res.status !== 200 && res.status !== 304) {
+        console.log(res);
+        if (res.status != 200 && res.status != 304) {
           dispatch(loginError(res.message));
         }
         else {

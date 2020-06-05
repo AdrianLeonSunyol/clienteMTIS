@@ -38,7 +38,6 @@ export class LoginService {
         })
       })
         .then((res) => {
-          console.log(res);
           return res.json();
         })
         .then((response: ILoginResponse) => {
@@ -86,7 +85,6 @@ export class LoginService {
         })
       })
         .then((res) => {
-          console.log(res);
           return res.json();
         })
         .then((response: ILoginResponse) => {
@@ -108,9 +106,10 @@ export class LoginService {
           }
         })
         .catch(err => {
+          console.log(err);
           reject({
             status: 400,
-            message: "Error intentando hacer login!"
+            message: "Error intentando hacer registro!"
           });
         });
     });
