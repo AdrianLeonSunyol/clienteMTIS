@@ -8,10 +8,6 @@ export class PrivatePage extends React.Component<IPrivatePageProps, {}> {
     super(props);
   }
 
-  _onSeguimientoPaqueteCallback = async (paquete: Paquete) => {
-    this.props.seguimiento(paquete);
-  }
-
   render(): React.ReactElement {
     return (
       <div>
@@ -19,7 +15,7 @@ export class PrivatePage extends React.Component<IPrivatePageProps, {}> {
           this.props.user.tipo == "usuario" &&
           <PaquetesComponentUsuario
             usuario={this.props.user}
-            seguimiento={this._onSeguimientoPaqueteCallback}
+            paquetes={this.props.paquetes}
           />
           //<AdminPage
           //  user={this.props.user}

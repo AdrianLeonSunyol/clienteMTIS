@@ -1,9 +1,9 @@
 import { IPackage } from "./IPackage";
 
 export interface IUser {
-  _id: string;
+  id: string;
   nombre: string;
-  apellido: string;
+  apellidos: string;
   email: string;
   tipo: string;
   password?: string;
@@ -12,5 +12,5 @@ export interface IUser {
   provincia: string;
   fechaNacimiento: string;
   cp: string;
-  paquetes: IPackage[];
+  disponible: boolean;
 }

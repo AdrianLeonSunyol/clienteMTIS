@@ -1,36 +1,46 @@
 import * as React from 'react';
 import './style.scss';
 import { PaqueteOperationCallback } from '../../models';
+import { NavLink, Link, Route, Switch, Redirect } from 'react-router-dom';
+import { Paquete } from '../../models/PaqueteModel';
+import { Estado } from '../../models/EstadoEnum';
+import SeguimientoComponent from '../Seguimiento/SeguimientoComponent';
+import { IService } from '../../services';
+import { ApiServiceFactory } from '../../services/ApiServiceFactory';
+import { useHistory } from "react-router-dom";
+
+import { connect } from "react-redux";
+import { bindActionCreators } from 'redux';
+import * as paqueteActions from "../../redux/components/crudPaquetes/crudPaqueteActions";
 
 
 export interface IHomeState {
-  paquete: string;
+  paqueteId: string;
 }
 
 export interface IHomeProps {
-  seguimiento: PaqueteOperationCallback;
+
 }
 
 declare var M: any;
 
-export class HomePage extends React.Component<IHomeProps, IHomeState> {
 
+export class HomePage extends React.Component<IHomeProps, IHomeState> {
   constructor(props: IHomeProps) {
     super(props);
 
     this.state = {
-      paquete: ""
+      paqueteId: "",
     };
   }
 
-  localizarPaquete = (event: any) => {
+  localizarPaquete = async (event: any) => {
     event.preventDefault();
-    if (this.state.paquete == "") {
+    if (this.state.paqueteId == "") {
       M.toast({
         html: "Por favor, introduce un ID de seguimiento válido!"
       });
-    } else
-      this.props.seguimiento(this.state.paquete)
+    }
   }
 
   _onHandleChange = (event: any) => {
@@ -38,7 +48,7 @@ export class HomePage extends React.Component<IHomeProps, IHomeState> {
     const value = target.value;
 
     this.setState({
-      paquete: value
+      paqueteId: value
     });
   }
 
@@ -56,7 +66,8 @@ export class HomePage extends React.Component<IHomeProps, IHomeState> {
                   </div>
                   <br />
                   <div className="col s4 center">
-                    <button className="btn waves-effect waves-light #1a237e indigo darken-4">Buscar
+                    <button type="submit" className="btn waves-effect waves-light #1a237e indigo darken-4">
+                      <Link to={`/seguimiento/${this.state.paqueteId}`}>Buscar</Link>
                       <i className="material-icons right">send</i>
                     </button>
                   </div>
@@ -66,6 +77,6 @@ export class HomePage extends React.Component<IHomeProps, IHomeState> {
           </div>
         </div >
       </div >
-    )
+    );
   }
 }

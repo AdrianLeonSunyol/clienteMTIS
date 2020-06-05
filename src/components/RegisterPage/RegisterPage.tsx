@@ -11,18 +11,18 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
 
     this.state = {
       usuario: {
-        _id: "",
+        id: "",
         nombre: "",
-        apellido: "",
+        apellidos: "",
         email: "",
-        password: "",
-        direccion: "",
         tipo: "",
-        fechaNacimiento: "",
-        provincia: "",
+        direccion: "",
         localidad: "",
         cp: "",
-        paquetes: []
+        fechaNacimiento: "",
+        password: "",
+        provincia: "",
+        disponible: false
       }
     }
   }
@@ -37,7 +37,7 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
       user.localidad === "" ||
       user.provincia === "" ||
       user.email === "" ||
-      user.apellido === "" ||
+      user.apellidos === "" ||
       user.password === ""
     )
       ? true
@@ -92,7 +92,7 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
                         <input type="text" placeholder="Name" name="nombre" onChange={this.handleChange} value={this.state.usuario.nombre} />
                       </div>
                       <div className="col s12 m6 input-field">
-                        <input type="text" placeholder="Apellidos" name="apellido" onChange={this.handleChange} value={this.state.usuario.apellido} />
+                        <input type="text" placeholder="Apellidos" name="apellidos" onChange={this.handleChange} value={this.state.usuario.apellidos} />
                       </div>
                     </div>
 

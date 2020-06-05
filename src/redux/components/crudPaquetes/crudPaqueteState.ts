@@ -1,6 +1,7 @@
 
 export const crudPaqueteState = {
-  paquetes: [],
+  paquete: {},
   estado: [],
-  message: ""
+  messagePaquete: "",
+  ok: false
 }

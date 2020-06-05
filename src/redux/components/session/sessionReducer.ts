@@ -26,17 +26,19 @@ export function sessionReducer(state = sessionState, action: any) {
       return {
         ...state,
         message: action.message,
-        user: action.user,
+        user: {},
         efectiveDone: action.efectiveDone,
-        servicios: []
+        servicios: [],
+        paquetes: [],
       }
     case LOAD_USER_REQUEST:
       return {
         ...state,
         message: action.message,
-        user: action.user,
+        user: {},
         efectiveDone: action.efectiveDone,
-        servicios: []
+        servicios: [],
+        paquetes: []
       }
     case LOAD_USER_SUCCESS: {
       return {
@@ -44,7 +46,8 @@ export function sessionReducer(state = sessionState, action: any) {
         user: action.user,
         message: action.message,
         efectiveDone: action.efectiveDone,
-        servicios: action.servicios
+        servicios: action.servicios,
+        paquetes: action.paquetes,
       }
     };
     //sessions
@@ -96,7 +99,6 @@ export function sessionReducer(state = sessionState, action: any) {
         isAuthenticated: false,
         message: action.message,
         efectiveDone: action.efectiveDone,
-        servicios: []
       };
     case LOGOUT_SUCCESS:
       return {
@@ -104,7 +106,6 @@ export function sessionReducer(state = sessionState, action: any) {
         isAuthenticated: false,
         message: action.message,
         efectiveDone: action.efectiveDone,
-        servicios: []
       };
     default:
       return state;

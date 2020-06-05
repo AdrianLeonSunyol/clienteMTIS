@@ -11,25 +11,28 @@ import {
   LOAD_USER_SUCCESS
 } from "../../";
 import { ApiServiceFactory } from "../../../services/ApiServiceFactory";
-import { Usuario } from "../../../models";
+import { Usuario, IUser, UserFactory } from "../../../models";
 import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE } from "../../types";
+import PaquetesComponentRepartidor from "../../../components/paquetes/PaquetesComponentRepartidor";
+import { Paquete } from "../../../models/PaqueteModel";
 
 function requestLoadUser() {
   return {
     type: LOAD_USER_REQUEST,
     message: "Petición de carga de usuario de sesión",
     efectiveDone: false,
-    user: false
   };
 }
 
-function receiveLoadUser(servicios: service[]) {
+function receiveLoadUser(user: IUser, servicios: service[], paquetes: Paquete[]) {
+  console.log(paquetes);
   return {
     type: LOAD_USER_SUCCESS,
-    user: true,
+    user: user,
     message: 'Usuario cargado correctamente',
     efectiveDone: true,
-    servicios: servicios
+    servicios: servicios,
+    paquetes: paquetes
   };
 }
 
@@ -37,8 +40,6 @@ function loadUserFailure(message: string) {
   return {
     type: LOAD_USER_FAILURE,
     efectiveDone: false,
-    message: message,
-    user: false
   };
 }
 
@@ -68,7 +69,7 @@ function receiveLogin(message) {
     isFetching: false,
     isAuthenticated: true,
     efectiveDone: true,
-    message: message
+    message: message,
   };
 }
 
@@ -78,7 +79,7 @@ function receiveRegister(message) {
     isFetching: false,
     isAuthenticated: true,
     efectiveDone: true,
-    message: message
+    message: message,
   };
 }
 
@@ -127,6 +128,34 @@ type service = {
   tipo: string
 };
 
+
+function loadServicios(tipo: string): service[] {
+  var servicios: service[] = [];
+  var new_service: service = {
+    servicio: ApiServiceFactory.createApiService(localStorage.getItem('tipo') || ""),
+    tipo: localStorage.getItem('tipo') || ""
+  };
+  servicios.push(new_service);
+  if (localStorage.getItem('tipo') === 'admin') {
+    var new_service: service = {
+      servicio: ApiServiceFactory.createApiService("repartidor"),
+      tipo: "repartidor"
+    };
+    servicios.push(new_service);
+    var new_service1: service = {
+      servicio: ApiServiceFactory.createApiService("transportista"),
+      tipo: "transportista"
+    };
+    servicios.push(new_service1);
+    var new_service2: service = {
+      servicio: ApiServiceFactory.createApiService("usuario"),
+      tipo: "usuario"
+    };
+    servicios.push(new_service2);
+  }
+  return servicios;
+}
+
 export function loginUser(login: LoginService, email: string, password: string) {
   return function (dispatch) {
     dispatch(requestLogin());
@@ -142,6 +171,7 @@ export function loginUser(login: LoginService, email: string, password: string) 
           localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('tipo', res.tipo);
           localStorage.setItem('sec', res.cp_seguridad);
+          localStorage.setItem('paquetes', JSON.stringify(res.paquetes));
           dispatch(receiveLogin(res.message));
         }
       })
@@ -166,6 +196,7 @@ export function registerUser(login: LoginService, user: Usuario) {
           localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('tipo', res.tipo);
           localStorage.setItem('sec', res.cp_seguridad);
+          localStorage.setItem('paquetes', JSON.stringify(res.paquetes));
           dispatch(receiveRegister(res.message));
         }
       })
@@ -183,48 +214,23 @@ export function logoutUser() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('tipo');
-    localStorage.removeItem('user_data');
+    localStorage.removeItem('sec');
+    localStorage.removeItem('paquetes');
     dispatch(receiveLogout());
   }
 }
 
+//los servicios se cargan en el usuario cuando hace login
 export function loadUser() {
-  var servicios: service[] = [];
-  var new_service: service = {
-    servicio: ApiServiceFactory.createApiService(localStorage.getItem('tipo') || ""),
-    tipo: localStorage.getItem('tipo') || ""
-  };
-  servicios.push(new_service);
-  if (localStorage.getItem('tipo') === 'admin') {
-    var new_service: service = {
-      servicio: ApiServiceFactory.createApiService("repartidor"),
-      tipo: "repartidor"
-    };
-    servicios.push(new_service);
-    var new_service1: service = {
-      servicio: ApiServiceFactory.createApiService("transportista"),
-      tipo: "transportista"
-    };
-    servicios.push(new_service1);
-  }
-
+  var paquetes: Paquete[] = JSON.parse(localStorage.getItem('paquetes') || "");
+  var servicios: service[] = loadServicios(localStorage.getItem('tipo') || "");
+  var usuario: IUser = UserFactory.getInstance(
+    localStorage.getItem('tipo') || "",
+    JSON.parse(localStorage.getItem('user') || "")
+  );
   return function (dispatch) {
     dispatch(requestLoadUser());
-    return servicios[0].servicio
-      .getOne(localStorage.getItem('user') || "")
-      .then(res => {
-        if (res.status !== 200 && res.status !== 304 && res.status !== undefined) {
-          dispatch(loadUserFailure(res.message));
-        }
-        else {
-          localStorage.setItem('user_data', JSON.stringify(res));
-          dispatch(receiveLoadUser(servicios));
-        }
-      })
-      .catch(error => {
-        dispatch(loadUserFailure(error));
-        console.log("Error: ", error);
-      });
+    dispatch(receiveLoadUser(usuario, servicios, paquetes));
   }
 }
 

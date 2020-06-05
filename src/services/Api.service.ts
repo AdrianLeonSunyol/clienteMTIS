@@ -4,6 +4,7 @@ import {
   handleResponse
 } from "./api";
 import { IService } from ".";
+import { Estado } from "../models/EstadoEnum";
 
 /**
  * Servicio para las clases de usuario
@@ -35,17 +36,36 @@ export class ApiService implements IService {
         status: 200,
         token: "token",
         user: {
-          _id: "hola",
+          id: "1",
           nombre: "adrian",
-          apellido: "leon suñol",
+          apellidos: "leon suñol",
           email: "adrian@gmail.com",
           tipo: "usuario",
           password: "adrian",
-          cp: "cp",
+          cp: "03003",
           fechaNacimiento: "fechaNacimiento",
           provincia: "provincia",
           localidad: "licalidad",
-          paquete: [],
+        },
+        paquete: {
+          id: "1",
+          usuario_id: "1",
+          precio: 100,
+          peso: 5,
+          alto: 5,
+          ancho: 5,
+          profundo: 5,
+          origen: "alicante",
+          destino: "barcelona",
+          provincia_origen: "alicante",
+          provincia_destino: "barcelona",
+          localizacion_actual: "alicante",
+          direccion_origen: "alicante",
+          direccion_destino: "barcelona",
+          zona: "alicante",
+          estado: Estado.PENDIENTE_RECOGER,
+          asignado: true,
+          id_repartidor: "1",
         },
         tipo: "usuario",
       })

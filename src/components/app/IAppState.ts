@@ -6,4 +6,6 @@ export interface IAppState {
   login: LoginService;
   user: IUser;
   paquete: Paquete;
+  paquetes: Paquete[];
+  servicios: { servicio: IService, tipo: string }[];
 }

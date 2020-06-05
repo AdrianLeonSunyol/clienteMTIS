@@ -3,6 +3,7 @@ import {
   ILoginPageState,
   ILoginPageProps
 } from ".";
+import { Link } from 'react-router-dom';
 declare var M: any;
 
 export class LoginPage extends React.Component<ILoginPageProps, ILoginPageState> {
@@ -98,8 +99,9 @@ export class LoginPage extends React.Component<ILoginPageProps, ILoginPageState>
                             </p>
                           </div>
                           <div className="col s6">
-                            <button className="btn waves-effect waves-light">Log In
-                                                    <i className="material-icons right">send</i>
+                            <button type="submit" className="btn light-blue darken-4">
+                              <Link to="/">Log In</Link>
+                              <i className="material-icons right">send</i>
                             </button>
                           </div>
                         </div>

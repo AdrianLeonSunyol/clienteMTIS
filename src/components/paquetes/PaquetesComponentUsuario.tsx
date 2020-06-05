@@ -1,20 +1,19 @@
+
 import React, { Component } from 'react'
 import { IPaqueteComponentProps } from './IPaqueteComponentProps'
 import { IPaqueteComponentState } from './IPaqueteComponentState'
 import { Paquete } from '../../models/PaqueteModel';
-import { verify } from 'crypto';
+import { Link } from 'react-router-dom';
 
 export default class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaqueteComponentState> {
   constructor(props: IPaqueteComponentProps) {
     super(props);
     this.state = {
-      paquetes: this.props.usuario.paquetes
+      usuario: this.props.usuario,
+      paquetes: this.props.paquetes
     };
   }
 
-  _onSeguimientoPaquete = async (paquete: Paquete) => {
-    this.props.seguimiento(paquete);
-  }
   render() {
     return (
       <div className="container">
@@ -41,16 +40,16 @@ export default class PaquetesComponentUsuario extends Component<IPaqueteComponen
                       this.state.paquetes.map((paquete: Paquete) => {
                         return (
                           <tr>
-                            <td>{paquete._id}</td>
+                            <td>{paquete.id}</td>
                             <td>"fechaCreación"</td>
                             <td>"fecha entrega estimada"</td>
                             <td>{paquete.direccion_destino}</td>
                             <td>{paquete.estado}</td>
-                            <button className="btn" onClick={() => this._onSeguimientoPaquete(paquete)}>
-                              ver detalle
-                         </button>
+                            <button className="btn waves-effect waves-light #1a237e indigo darken-4">
+                              <Link to={`/seguimiento/${paquete.id}`}>ver detalle</Link>
+                            </button>
                           </tr>
-                        )
+                        );
                       })
                     }
                   </tbody>

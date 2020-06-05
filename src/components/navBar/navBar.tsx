@@ -1,9 +1,8 @@
 import * as React from 'react';
 import {
-  NavLink
+  NavLink, Link
 } from "react-router-dom";
 import { INavBarProps } from './INavBarProps';
-
 
 declare var M: any;
 
@@ -15,6 +14,7 @@ export class NavBar extends React.Component<INavBarProps, {}> {
   componentDidMount(): void {
     M.AutoInit();
   }
+
 
   logout = () => {
     if (window.confirm("Seguro que deseas cerrar sessión") === true) {
@@ -50,9 +50,10 @@ export class NavBar extends React.Component<INavBarProps, {}> {
               <ul className="right hide-on-med-and-down">
                 <li>{<NavLink to="/" exact>Home</NavLink>}</li>
                 <li>{<NavLink to="/private" exact>Mis paquetes</NavLink>}</li>
+                <li>{<NavLink to="/crear">Crear paquete</NavLink>}</li>
                 <li>
                   <button onClick={this.logout} className="btn btn-primary">
-                    Logout
+                    <Link to="/">LogOut</Link>
                   </button>
                 </li>
               </ul>

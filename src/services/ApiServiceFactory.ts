@@ -9,6 +9,8 @@ export class ApiServiceFactory {
     switch (target) {
       case "admin":
         return new ApiService(`${api_url}/admin`);
+      case "paquete":
+        return new ApiService(`${api_url}/paquete`);
       default:
         return new ApiService(`${api_url}/usuario`);
     }
