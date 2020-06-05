@@ -31,57 +31,31 @@ export class ApiService implements IService {
   }
 
   getOne = (id: string) => {
+    var body = {
+      "id_paquete": parseInt(id),
+      "codigo_seguridad": localStorage.getItem('token') || ""
+    }
     return new Promise<any>((resolve, reject) => {
-      resolve({
-        status: 200,
-        token: "token",
-        user: {
-          id: "1",
-          nombre: "adrian",
-          apellidos: "leon suñol",
-          email: "adrian@gmail.com",
-          tipo: "usuario",
-          password: "adrian",
-          cp: "03003",
-          fechaNacimiento: "fechaNacimiento",
-          provincia: "provincia",
-          localidad: "licalidad",
-        },
-        paquete: {
-          id: "1",
-          usuario_id: "1",
-          precio: 100,
-          peso: 5,
-          alto: 5,
-          ancho: 5,
-          profundo: 5,
-          origen: "alicante",
-          destino: "barcelona",
-          provincia_origen: "alicante",
-          provincia_destino: "barcelona",
-          localizacion_actual: "alicante",
-          direccion_origen: "alicante",
-          direccion_destino: "barcelona",
-          zona: "alicante",
-          estado: Estado.RECOGIDO,
-          asignado: true,
-          id_repartidor: "1",
-        },
-        tipo: "usuario",
-      })
+    return fetch("http://localhost:9090/getpaquete", {
+    method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
     })
-    //return fetch(`${this.HTTP_URI}/${id}`, {
-    //  method: 'GET',
-    //  headers: {
-    //    'Accept': 'application/json',
-    //    'Content-Type': 'application/json',
-    //    'Authorization': 'Bearer ' + localStorage.getItem('token')
-    //  },
-    //})
-    //  .then(res => {
-    //    return res.json();
-    //  })
-    //  .catch(handleError);
+      .then((res) => {
+        return res.json();
+      })
+      .then((res: IPackage) => {
+          resolve(res);
+      })
+      .catch((err) => {
+        reject({
+          status: 400,
+          message: "Error cargando paquete"
+        });
+      });
+    });
   }
 
   post = (object: any) => {

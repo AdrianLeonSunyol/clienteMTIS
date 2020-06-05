@@ -20,6 +20,7 @@ export interface ISeguimientoComponentProps {
     loadPaquete(service: IService, idPaquete: string);
   }
   match: any;
+  ok;
 }
 
 export interface ISeguimientoComponentState {
@@ -28,6 +29,8 @@ export interface ISeguimientoComponentState {
   estadoVisible: boolean;
   progressBar: number;
 }
+
+declare var M: any;
 
 class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguimientoComponentState> {
   paquete_init = {
@@ -72,10 +75,10 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
     this.setState({
       paquete: this.props.paquete
     });
+    M.toast({
+      html: this.props.messagePaquete
+    });
   }
-
-
-
 
   //esta vista es tanto pública como privada //puedo tener id o paquete
   //si me llega un id tengo que cargar el paquete

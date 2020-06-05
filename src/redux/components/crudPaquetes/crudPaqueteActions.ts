@@ -105,16 +105,15 @@ export function loadPaquete(servicio: ApiService, idPaquete: string) {
   return async function (dispatch) {
     dispatch(requestLoadPaquete())
     return servicio.getOne(idPaquete)
-      .then(res => {
-        if (res.status == 200)
-          dispatch(receiveLoadPaquete(res.paquete));
-        else {
-          dispatch(loadPaqueteError(res.message));
-        }
+      .then((res: IPackage) => {
+        if (parseInt(res.id) == 0) {
+          dispatch(loadPagoError("El id introducido no se corresponde con ningún paquete"));
+        } else 
+          dispatch(receiveLoadPaquete(res));
       })
       .catch(err => {
         console.log(err);
-        dispatch(loadPaqueteError(err));
+        dispatch(loadPaqueteError(err.message));
       });
   }
 }
