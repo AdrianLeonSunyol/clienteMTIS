@@ -322,6 +322,7 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
       },
       paquete: this.paquete_init
     });
+    window.location.href = "/";
   }
 
   _onPreviousForm = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

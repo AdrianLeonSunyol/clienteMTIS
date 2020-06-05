@@ -6,5 +6,6 @@ export enum Estado {
   EN_TRANSPORTE = "en_transporte",
   COLA_ENTREGA_REPARTO = "cola_entrega_reparto",
   EN_REPARTO = "en_reparto",
-  ENTREGADO = "entregado"
+  ENTREGADO = "entregado",
+  PENDIENTE_PAGO = "pendiente_pago"
 }

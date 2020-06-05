@@ -18,8 +18,9 @@ import {
 import { ApiService, IService } from "../../../services";
 import { Paquete } from "../../../models/PaqueteModel";
 import { IPackage } from "../../../models/interfaces/IPackage";
-import { PresupuestoPago, IPagoRequest, IPagoResponse } from "../../../services/PagoPresupuesto.service";
+import { PresupuestoPago, IPagoRequest, IPagoResponse, IPresupuestoResponse } from "../../../services/PagoPresupuesto.service";
 import { ITarjeta } from "../../../components/paquetes/CreatePaquete";
+import { Estado } from "../../../models/EstadoEnum";
 
 function requestLoadPaquete() {
   return {
@@ -134,9 +135,16 @@ export function generatePresupuesto(servicio: PresupuestoPago, paquete: IPackage
   return async function (dispatch) {
     dispatch(requestPresupuesto());
     return servicio.getPresupuesto(paquete)
-      .then((res: PresupuestoResponse) => {
+      .then((res: IPresupuestoResponse) => {
         if (res.status === 200) {
-          dispatch(receiveGeneratePresupuest(res.presupuesto));
+          var paquetes: Paquete[] = JSON.parse(localStorage.getItem('paquetes') || "") || [];
+          paquete.id = res.id_paquete;
+          paquete.precio = parseInt(res.presupuesto);
+          paquete.estado = Estado.PENDIENTE_PAGO;
+          paquetes.push(paquete);
+          localStorage.removeItem('paquetes');
+          localStorage.setItem('paquetes', JSON.stringify(paquetes));
+          dispatch(receiveGeneratePresupuest(parseInt(res.presupuesto)));
         } else {
           dispatch(loadPresupuestoError(res.message));
         }
