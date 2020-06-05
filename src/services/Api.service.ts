@@ -63,7 +63,7 @@ export class ApiService implements IService {
           direccion_origen: "alicante",
           direccion_destino: "barcelona",
           zona: "alicante",
-          estado: Estado.PENDIENTE_RECOGER,
+          estado: Estado.RECOGIDO,
           asignado: true,
           id_repartidor: "1",
         },

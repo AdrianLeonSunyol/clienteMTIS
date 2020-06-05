@@ -175,7 +175,6 @@ export function loginUser(login: LoginService, email: string, password: string) 
           localStorage.setItem('token', res.token);
           localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('tipo', res.tipo);
-          localStorage.setItem('sec', res.cp_seguridad);
           localStorage.setItem('paquetes', JSON.stringify(res.paquetes));
           dispatch(receiveLogin(res.message));
         }
@@ -200,7 +199,6 @@ export function registerUser(login: LoginService, user: Usuario) {
           localStorage.setItem('token', res.token);
           localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('tipo', res.tipo);
-          localStorage.setItem('sec', res.cp_seguridad);
           localStorage.setItem('paquetes', JSON.stringify(res.paquetes));
           dispatch(receiveRegister(res.message));
         }
@@ -219,7 +217,6 @@ export function logoutUser() {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('tipo');
-    localStorage.removeItem('sec');
     localStorage.removeItem('paquetes');
     dispatch(receiveLogout());
   }

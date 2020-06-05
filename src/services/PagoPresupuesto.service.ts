@@ -1,6 +1,7 @@
 import { ApiService } from "./Api.service";
 import { IPackage } from "../models/interfaces/IPackage";
 import { ITarjeta } from "../components/paquetes/CreatePaquete";
+import { parse } from "path";
 
 export interface IPagoRequest {
   tarjeta: string;
@@ -18,22 +19,91 @@ export interface IPagoResponse {
   message: string;
 }
 
+export interface IPresupuestoRequest {
+  Paquete: {
+    peso: string;
+    alto: string;
+    ancho: string;
+    profundo: string;
+    origen: string;
+    destino: string;
+    provincia_origen: string;
+    provincia_destino: string;
+    direccion_origen: string;
+    direccion_destino: string;
+    zona: string;
+  },
+  id_usuario: number;
+  codigo_seguridad: string;
+}
+
+export interface IPresupuestoResponse {
+  message: string;
+  status: number;
+  presupuesto: string;
+  id_usuario: string;
+  id_paquete: string;
+}
+
 export class PresupuestoPago extends ApiService {
 
   HTTP_pago: string = "http://localhost:8080/pago";
-  HTTP_presupuesto: string = "http://localhost:8080/presupuesto";
+  HTTP_presupuesto: string = "http://localhost:9090/presupuesto";
 
   constructor(http_uri: string) {
     super(http_uri);
   }
   getPresupuesto = (paquete: IPackage): Promise<any> => {
+    var request: IPresupuestoRequest = {
+      Paquete: {
+        peso: paquete.peso.toString(),
+        alto: paquete.alto.toString(),
+        ancho: paquete.ancho.toString(),
+        profundo: paquete.profundo.toString(),
+        origen: paquete.origen,
+        destino: paquete.destino,
+        provincia_origen: paquete.provincia_origen,
+        provincia_destino: paquete.provincia_destino,
+        direccion_origen: paquete.direccion_origen,
+        direccion_destino: paquete.direccion_destino,
+        zona: paquete.zona,
+      },
+      id_usuario: parseInt(paquete.usuario_id),
+      codigo_seguridad: localStorage.getItem('token') || ""
+    }
     return new Promise<any>((resolve, reject) => {
-      resolve({
-        status: 200,
-        message: "Ok",
-        presupuesto: 105.06
-      });
-    })
+      fetch(this.HTTP_presupuesto, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request)
+      })
+        .then((res: any) => {
+          console.log(res);
+          return res.JSON();
+        })
+        .then((response: IPresupuestoResponse) => {
+          if (response.status == 200) {
+            resolve({
+              status: 200,
+              message: response.message,
+              presupuesto: response.presupuesto,
+              id_usuario: response.id_usuario,
+              id_paquete: response.id_paquete
+            })
+          } else {
+            reject({
+              status: response.status,
+              message: response.message
+            });
+          }
+        })
+        .catch(err => {
+          reject({
+            status: 400,
+            message: "Error intentando hacer login!"
+          });
+        });
+    });
   }
 
   pagoPresupuesto = (pago: IPagoRequest): Promise<any> => {

@@ -1,8 +1,10 @@
 export enum Estado {
-  PENDIENTE_RECOGER = "pendiente_recoger",
-  ENTREGADO = "entregado",
-  PENDIENTE_ENTREGA = "pendiente_entregar",
-  EN_CENTRAL = "en_central",
-  DESPLAZAMIENTO = "desplazamiento_central",
-  SIN_ASIGNAR = "sin_asignar"
+  SIN_ASIGNAR = "sin_asignar",
+  COLA_RECOGIDAS = "cola_recogidas",
+  RECOGIDO = "recogida",
+  COLA_ENTREGA_TRANSPORTE = "cola_entrega_transporte",
+  EN_TRANSPORTE = "en_transporte",
+  COLA_ENTREGA_REPARTO = "cola_entrega_reparto",
+  EN_REPARTO = "en_reparto",
+  ENTREGADO = "entregado"
 }
