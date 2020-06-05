@@ -192,7 +192,7 @@ export function registerUser(login: LoginService, user: Usuario) {
     dispatch(requestRegister());
     return login.registroUser(user)
       .then(res => {
-        if (res.status !== 200 && res.status !== 304) {
+        if (res.status != 200 && res.status != 304) {
           dispatch(registerError(res.message));
         }
         else {
