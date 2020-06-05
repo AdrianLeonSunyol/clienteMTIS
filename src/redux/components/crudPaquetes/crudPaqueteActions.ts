@@ -78,7 +78,7 @@ function receivePagarPresupuesto(identificador: number) {
 function loadPaqueteError(error: string) {
   return {
     type: LOAD_PAQUETE_FAILURE,
-    messagePaquete: `Error al cargar el paquete: ${error}`,
+    messagePaquete: error,
     ok: false
   }
 }
@@ -108,7 +108,7 @@ export function loadPaquete(servicio: ApiService, idPaquete: string) {
       .then((res: IPackage) => {
         if (parseInt(res.id) == 0) {
           dispatch(loadPagoError("El id introducido no se corresponde con ningún paquete"));
-        } else 
+        } else
           dispatch(receiveLoadPaquete(res));
       })
       .catch(err => {

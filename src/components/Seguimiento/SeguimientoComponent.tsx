@@ -28,6 +28,7 @@ export interface ISeguimientoComponentState {
   paquete: Paquete;
   estadoVisible: boolean;
   progressBar: number;
+  estados: string[];
 }
 
 declare var M: any;
@@ -54,6 +55,18 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
     id_repartidor: "",
   }
 
+  estadosPaquete = [
+    "sin_asignar",
+    "cola_recogidas",
+    "recogida",
+    "cola_entrega_transporte",
+    "en_transporte",
+    "cola_entrega_reparto",
+    "en_reparto",
+    "entregado",
+    "pendiente_pago"
+  ]
+
   constructor(props: ISeguimientoComponentProps) {
     super(props);
 
@@ -61,7 +74,8 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
       paqueteId: this.props.match.params.idPaquete,
       paquete: this.paquete_init,
       estadoVisible: false,
-      progressBar: 400
+      progressBar: 1000,
+      estados: []
     }
   }
 
@@ -77,6 +91,22 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
     });
     M.toast({
       html: this.props.messagePaquete
+    });
+
+    this._getProgressPackage();
+  }
+
+  _getProgressPackage = () => {
+    var indexEstado = this.estadosPaquete.indexOf(this.state.paquete.estado);
+    var estadosToShow = this.estadosPaquete.slice(0, indexEstado + 1);
+
+    var lengthState = this.estadosPaquete.length;
+    var lengthCurrentState = estadosToShow.length;
+    var progress = lengthCurrentState * this.state.progressBar / lengthState;
+
+    this.setState({
+      estados: estadosToShow,
+      progressBar: progress
     });
   }
 
