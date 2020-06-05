@@ -18,7 +18,7 @@ import {
 import { ApiService, IService } from "../../../services";
 import { Paquete } from "../../../models/PaqueteModel";
 import { IPackage } from "../../../models/interfaces/IPackage";
-import { PaqueteService } from "../../../services/PaqueteService.service";
+import { PresupuestoPago, IPagoRequest, IPagoResponse } from "../../../services/PagoPresupuesto.service";
 import { ITarjeta } from "../../../components/paquetes/CreatePaquete";
 
 function requestLoadPaquete() {
@@ -130,7 +130,7 @@ interface PagoResponse {
   identificador: number;
 }
 
-export function generatePresupuesto(servicio: PaqueteService, paquete: IPackage) {
+export function generatePresupuesto(servicio: PresupuestoPago, paquete: IPackage) {
   return async function (dispatch) {
     dispatch(requestPresupuesto());
     return servicio.getPresupuesto(paquete)
@@ -147,19 +147,15 @@ export function generatePresupuesto(servicio: PaqueteService, paquete: IPackage)
   }
 }
 
-export function pagarPresupuesto(servicio: PaqueteService, presupuesto: number, tarjeta: ITarjeta) {
+export function pagarPresupuesto(servicio: PresupuestoPago, pago: IPagoRequest) {
   return async function (dispatch) {
     dispatch(requestPago());
-    return servicio.pagoPresupuesto(presupuesto, tarjeta)
+    return servicio.pagoPresupuesto(pago)
       .then((res: PagoResponse) => {
-        if (res.status === 200) {
-          dispatch(receivePagarPresupuesto(res.identificador));
-        } else {
-          dispatch(loadPagoError(res.message));
-        }
+        dispatch(receivePagarPresupuesto(res.identificador));
       })
       .catch(err => {
-        dispatch(loadPagoError(err));
+        dispatch(loadPagoError(err.message));
       });
   }
 }

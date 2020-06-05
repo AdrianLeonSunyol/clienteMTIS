@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as paqueteActions from "../../redux/components/crudPaquetes/crudPaqueteActions";
 import { ApiService, IService } from '../../services';
-import { PaqueteService } from '../../services/PaqueteService.service';
+import { PresupuestoPago, IPagoRequest, IPagoResponse } from '../../services/PagoPresupuesto.service';
 import { Link } from 'react-router-dom';
 
 
@@ -22,7 +22,7 @@ export interface ICreatePaqueteProps {
   identificador;
   paqueteActions: {
     generatePresupuesto(servicio: ApiService, paquete: IPackage);
-    pagarPresupuesto(servicio: ApiService, presupuesto: number, tarjeta: ITarjeta);
+    pagarPresupuesto(servicio: ApiService, pago: IPagoRequest);
   };
 }
 
@@ -48,6 +48,7 @@ export interface ITarjeta {
   fechaCaducidad: string;
   numeroSecreto: string;
 }
+
 
 declare var M: any;
 
@@ -250,7 +251,7 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
   _onNextGeneratePresupuesto = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     this.props.paqueteActions.generatePresupuesto(
-      this.props.servicios[1].servicio as PaqueteService,
+      this.props.servicios[1].servicio as PresupuestoPago,
       this.state.paquete
     )
     this.setState({
@@ -380,8 +381,16 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
     if (this.checkFromsValue()) {
       await this.props.paqueteActions.pagarPresupuesto(
         this.props.servicios[1].servicio as ApiService,
-        this.props.presupuesto,
-        this.state.tarjeta
+        {
+          usuario_id: this.props.usuario.id,
+          id_paquete: this.state.paquete.id,
+          token: localStorage.getItem('token') || "",
+          tarjeta: this.state.tarjeta.numeroCuenta,
+          cvv: this.state.tarjeta.numeroSecreto,
+          fecha_caducidad: this.state.tarjeta.fechaCaducidad,
+          precio: this.props.presupuesto,
+          destino: this.state.paquete.destino
+        }
       );
 
       if (this.props.pagado) {

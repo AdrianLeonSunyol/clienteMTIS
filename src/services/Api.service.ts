@@ -13,7 +13,6 @@ import { IPackage } from "../models/interfaces/IPackage";
 
 export class ApiService implements IService {
   //users: IUser[] = [];
-
   constructor(private HTTP_URI: string) {
     this.HTTP_URI = HTTP_URI;
   }
