@@ -1,6 +1,6 @@
 import React, { Component, HtmlHTMLAttributes } from 'react'
 import { IPackage } from '../../models/interfaces/IPackage'
-import { Usuario } from '../../models'
+import { Usuario, UserFactory } from '../../models'
 import { Estado } from '../../models/EstadoEnum';
 import { Paquete } from '../../models/PaqueteModel';
 
@@ -13,7 +13,6 @@ import { Link } from 'react-router-dom';
 
 
 export interface ICreatePaqueteProps {
-  usuario: Usuario;
   servicios: { servicio: IService, tipo: string }[];
   presupuesto;
   messagePaquete;
@@ -30,6 +29,7 @@ export interface ICreatePaqueteState {
   vistas: IFormularioState;
   paquete: Paquete;
   tarjeta: ITarjeta;
+  usuario: Usuario;
 }
 
 export interface IFormularioState {
@@ -55,7 +55,7 @@ declare var M: any;
 export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaqueteState> {
   paquete_init = {
     id: "",
-    usuario_id: this.props.usuario.id,
+    usuario_id: UserFactory.getInstance("usuario", JSON.parse(localStorage.getItem('user') || "")).id,
     precio: 0,
     peso: 0,
     alto: 0,
@@ -95,7 +95,8 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
         vistaPago: false,
         vistaPagoRealizado: false
       },
-      tarjeta: this.tarjeta_init
+      tarjeta: this.tarjeta_init,
+      usuario: UserFactory.getInstance("usuario", JSON.parse(localStorage.getItem('user') || ""))
     };
   }
 
@@ -164,7 +165,8 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
       if (
         this.state.paquete.destino === "" ||
         this.state.paquete.provincia_destino === "" ||
-        this.state.paquete.direccion_destino === ""
+        this.state.paquete.direccion_destino === "" ||
+        this.state.paquete.zona === ""
       ) {
         M.toast({
           html: "Por favor, introduce los datos requeridos!"
@@ -250,21 +252,44 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
 
   _onNextGeneratePresupuesto = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    this.props.paqueteActions.generatePresupuesto(
+
+    M.toast({
+      html: "El cálculo del presupuesto puede tardar un poco! Tenga paciencia por favor!"
+    });
+
+    await this.props.paqueteActions.generatePresupuesto(
       this.props.servicios[1].servicio as PresupuestoPago,
       this.state.paquete
-    )
-    this.setState({
-      vistas: {
-        vistaDatosRecogida: false,
-        vistaDatosEntrega: false,
-        vistaDatosPaquete: false,
-        vistaResumen: false,
-        vistaPresupuesto: true,
-        vistaPago: false,
-        vistaPagoRealizado: false
-      }
-    });
+    ); 
+
+    if (!this.props.ok) {
+      M.toast({
+        html: this.props.messagePaquete
+      });
+      this.setState({
+        vistas: {
+          vistaDatosRecogida: false,
+          vistaDatosEntrega: false,
+          vistaDatosPaquete: true,
+          vistaResumen: false,
+          vistaPresupuesto: false,
+          vistaPago: false,
+          vistaPagoRealizado: false
+        }
+      });
+    } else {
+      this.setState({
+        vistas: {
+          vistaDatosRecogida: false,
+          vistaDatosEntrega: false,
+          vistaDatosPaquete: false,
+          vistaResumen: false,
+          vistaPresupuesto: true,
+          vistaPago: false,
+          vistaPagoRealizado: false
+        }
+      });
+    }
   }
 
   _onPagarPresupuesto = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -382,7 +407,7 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
       await this.props.paqueteActions.pagarPresupuesto(
         this.props.servicios[1].servicio as ApiService,
         {
-          usuario_id: this.props.usuario.id,
+          usuario_id: this.state.usuario.id,
           id_paquete: this.state.paquete.id,
           token: localStorage.getItem('token') || "",
           tarjeta: this.state.tarjeta.numeroCuenta,
@@ -494,6 +519,9 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
                       <div className="col s12 input-field">
                         <input type="text" placeholder="Dirección de entrega" name="direccion_destino" onChange={this.handleChange} value={this.state.paquete.direccion_destino} />
                       </div>
+                      <div className="col s12 input-field">
+                        <input type="text" placeholder="Zona de entrega" name="zona" onChange={this.handleChange} value={this.state.paquete.zona} />
+                      </div>
                     </div>
 
                     <div className="row">
@@ -528,16 +556,16 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
                   <form onSubmit={this._onCreatePaqueteToProcess}>
                     <div className="row">
                       <div className="col s12 input-field">
-                        <input type="number" placeholder="Altura (cm)" name="alto" onChange={this.handleChange} value={this.state.paquete.alto || ""} />
+                        <input type="number" placeholder="Altura (cm) max 150" name="alto" onChange={this.handleChange} value={this.state.paquete.alto || ""} />
                       </div>
                       <div className="col s12 input-field">
-                        <input type="number" placeholder="Ancho (cm)" name="ancho" onChange={this.handleChange} value={this.state.paquete.ancho || ""} />
+                        <input type="number" placeholder="Ancho (cm) max 150" name="ancho" onChange={this.handleChange} value={this.state.paquete.ancho || ""} />
                       </div>
                       <div className="col s12 input-field">
-                        <input type="number" placeholder="Profundida (cm)" name="profundo" onChange={this.handleChange} value={this.state.paquete.profundo || ""} />
+                        <input type="number" placeholder="Profundida (cm) max 150" name="profundo" onChange={this.handleChange} value={this.state.paquete.profundo || ""} />
                       </div>
                       <div className="col s12 input-field">
-                        <input type="number" placeholder="Peso (kg)" name="peso" onChange={this.handleChange} value={this.state.paquete.peso || ""} />
+                        <input type="number" placeholder="Peso (kg) max 25" name="peso" onChange={this.handleChange} value={this.state.paquete.peso || ""} />
                       </div>
                     </div>
 

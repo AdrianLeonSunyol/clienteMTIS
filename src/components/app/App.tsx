@@ -152,7 +152,7 @@ class App extends React.Component<IAppProps, IAppState> {
               <Route exact path="/registro" render={() => <RegisterPage isAuthenticated={this.props.isAuthenticated} registroUser={this._onRegistro} />} />
               <Route exact path="/private" render={() => <PrivatePage paquetes={this.state.paquetes} user={this.state.user} servicios={this.props.servicios} />} />
               <Route exact path="/seguimiento/:idPaquete" component={SeguimientoComponent} />
-              <Route exact path="/crear" render={() => <CreatePaquete usuario={this.state.user} servicios={this.props.servicios} />} />
+              <Route exact path="/crear" render={() => <CreatePaquete servicios={this.props.servicios} />} />
               <Route exact component={PageNotFound} />
             </Switch>
           }

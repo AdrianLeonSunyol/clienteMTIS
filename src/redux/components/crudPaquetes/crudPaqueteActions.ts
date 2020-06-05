@@ -142,7 +142,7 @@ export function generatePresupuesto(servicio: PresupuestoPago, paquete: IPackage
         }
       })
       .catch(err => {
-        dispatch(loadPresupuestoError(err));
+        dispatch(loadPresupuestoError(err.message));
       });
   }
 }

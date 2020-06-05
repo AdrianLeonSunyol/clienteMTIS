@@ -174,6 +174,7 @@ export function loginUser(login: LoginService, email: string, password: string) 
         else {
           localStorage.setItem('email', email);
           localStorage.setItem('token', res.token);
+          res.user.tipo = res.tipo;
           localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('tipo', res.tipo);
           localStorage.setItem('paquetes', JSON.stringify(res.paquetes));
@@ -198,6 +199,7 @@ export function registerUser(login: LoginService, user: Usuario) {
         else {
           localStorage.setItem('email', res.user.email);
           localStorage.setItem('token', res.token);
+          res.user.tipo = res.tipo;
           localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('tipo', res.tipo);
           localStorage.setItem('paquetes', JSON.stringify(res.paquetes));
@@ -225,7 +227,7 @@ export function logoutUser() {
 
 //los servicios se cargan en el usuario cuando hace login
 export function loadUser() {
-  var paquetes: Paquete[] = JSON.parse(localStorage.getItem('paquetes') || "");
+  var paquetes: Paquete[] = JSON.parse(localStorage.getItem('paquetes') || "") || [];
   var servicios: service[] = loadServicios(localStorage.getItem('tipo') || "");
   var usuario: IUser = UserFactory.getInstance(
     localStorage.getItem('tipo') || "",
