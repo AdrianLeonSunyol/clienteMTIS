@@ -4,6 +4,9 @@ import { Paquete } from "../../models/PaqueteModel";
 
 export interface IPrivatePageProps {
   user: IUser;
-  paquetes: Paquete[];
   servicios: { servicio: IService, tipo: string }[];
+  paquetes;
+  actions: {
+    loadUser();
+  }
 }
