@@ -1,5 +1,6 @@
 import { ApiService } from "."
 import { IService } from ".";
+import { PaqueteService } from "./PaqueteService.service";
 
 export class ApiServiceFactory {
   static createApiService = (target: string): IService => {
@@ -10,9 +11,11 @@ export class ApiServiceFactory {
       case "admin":
         return new ApiService(`${api_url}/admin`);
       case "paquete":
-        return new ApiService(`${api_url}/paquete`);
-      default:
+        return new PaqueteService(`${api_url}/paquete`);
+      case "usuario":
         return new ApiService(`${api_url}/usuario`);
+      default:
+        return new ApiService("");
     }
   }
 }

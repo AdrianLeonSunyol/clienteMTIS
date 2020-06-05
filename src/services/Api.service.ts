@@ -5,6 +5,7 @@ import {
 } from "./api";
 import { IService } from ".";
 import { Estado } from "../models/EstadoEnum";
+import { IPackage } from "../models/interfaces/IPackage";
 
 /**
  * Servicio para las clases de usuario

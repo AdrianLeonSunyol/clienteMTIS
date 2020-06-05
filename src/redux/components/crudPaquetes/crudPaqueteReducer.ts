@@ -7,7 +7,13 @@ import {
   LOAD_PAQUETE_SUCCESS,
   CHANGE_PAQUETE_STATE_FAILURE,
   CHANGE_PAQUETE_STATE_REQUEST,
-  CHANGE_PAQUETE_STATE_SUCCESS
+  CHANGE_PAQUETE_STATE_SUCCESS,
+  PRESUPUESTO_REQUEST,
+  PRESUPUESTO_SUCCESS,
+  PRESUPUESTO_FAILURE,
+  PAGAR_REQUEST,
+  PAGAR_FAILURE,
+  PAGAR_SUCCESS
 } from "../../types";
 import { crudPaqueteState } from ".";
 
@@ -38,6 +44,47 @@ export function crudPaqueteReducer(state: any = crudPaqueteState, action: any) {
         messagePaquete: action.messagePaquete,
         paquete: action.paquete,
         ok: action.ok
+      }
+    case PRESUPUESTO_REQUEST:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
+        ok: action.ok
+      }
+    case PRESUPUESTO_SUCCESS:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
+        ok: action.ok,
+        presupuesto: action.presupuesto
+      }
+    case PRESUPUESTO_FAILURE:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
+        ok: action.ok
+      }
+    case PAGAR_REQUEST:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
+        ok: action.ok,
+        pagado: action.pagado,
+      }
+    case PAGAR_SUCCESS:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
+        ok: action.ok,
+        pagado: action.pagado,
+        identificador: action.identificador
+      }
+    case PAGAR_FAILURE:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
+        ok: action.ok,
+        pagado: action.pagado
       }
     default:
       return state;

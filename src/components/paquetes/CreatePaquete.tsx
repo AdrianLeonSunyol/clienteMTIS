@@ -3,15 +3,33 @@ import { IPackage } from '../../models/interfaces/IPackage'
 import { Usuario } from '../../models'
 import { Estado } from '../../models/EstadoEnum';
 import { Paquete } from '../../models/PaqueteModel';
-import { runInThisContext } from 'vm';
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as paqueteActions from "../../redux/components/crudPaquetes/crudPaqueteActions";
+import { ApiService, IService } from '../../services';
+import { PaqueteService } from '../../services/PaqueteService.service';
+import { Link } from 'react-router-dom';
+
 
 export interface ICreatePaqueteProps {
   usuario: Usuario;
+  servicios: { servicio: IService, tipo: string }[];
+  presupuesto;
+  messagePaquete;
+  ok;
+  pagado;
+  identificador;
+  paqueteActions: {
+    generatePresupuesto(servicio: ApiService, paquete: IPackage);
+    pagarPresupuesto(servicio: ApiService, presupuesto: number, tarjeta: ITarjeta);
+  };
 }
 
 export interface ICreatePaqueteState {
   vistas: IFormularioState;
   paquete: Paquete;
+  tarjeta: ITarjeta;
 }
 
 export interface IFormularioState {
@@ -20,6 +38,15 @@ export interface IFormularioState {
   vistaDatosPaquete: boolean;
   vistaResumen: boolean;
   vistaPresupuesto: boolean;
+  vistaPago: boolean;
+  vistaPagoRealizado: boolean;
+}
+
+export interface ITarjeta {
+  titularCuenta: string;
+  numeroCuenta: string;
+  fechaCaducidad: string;
+  numeroSecreto: string;
 }
 
 declare var M: any;
@@ -46,6 +73,13 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
     id_repartidor: "",
   }
 
+  tarjeta_init = {
+    titularCuenta: "",
+    numeroCuenta: "",
+    fechaCaducidad: "",
+    numeroSecreto: ""
+  }
+
   constructor(props: ICreatePaqueteProps) {
     super(props);
 
@@ -57,7 +91,10 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
         vistaDatosEntrega: false,
         vistaResumen: false,
         vistaPresupuesto: false,
-      }
+        vistaPago: false,
+        vistaPagoRealizado: false
+      },
+      tarjeta: this.tarjeta_init
     };
   }
 
@@ -76,6 +113,22 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
     });
   }
 
+  handleTarjetaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    const tarjeta = {
+      ...this.state.tarjeta,
+      [name]: value
+    }
+
+    this.setState({
+      tarjeta: tarjeta
+    });
+  }
+
   _onCreatePaqueteToProcess = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (this.checkFromsValue()) {
@@ -86,6 +139,8 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           vistaDatosPaquete: false,
           vistaResumen: true,
           vistaPresupuesto: false,
+          vistaPago: false,
+          vistaPagoRealizado: false
         }
       })
     }
@@ -115,12 +170,24 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
         });
         response = false;
       }
-    } else {
+    } else if (this.state.vistas.vistaDatosPaquete) {
       if (
         this.state.paquete.alto === 0 ||
         this.state.paquete.ancho === 0 ||
         this.state.paquete.profundo === 0 ||
         this.state.paquete.peso === 0
+      ) {
+        M.toast({
+          html: "Por favor, introduce los datos requeridos!"
+        });
+        response = false;
+      }
+    } else {
+      if (
+        this.state.tarjeta.titularCuenta === "" ||
+        this.state.tarjeta.numeroCuenta === "" ||
+        this.state.tarjeta.fechaCaducidad === "" ||
+        this.state.tarjeta.numeroSecreto === ""
       ) {
         M.toast({
           html: "Por favor, introduce los datos requeridos!"
@@ -142,6 +209,8 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           vistaDatosPaquete: false,
           vistaResumen: false,
           vistaPresupuesto: false,
+          vistaPago: false,
+          vistaPagoRealizado: false
         }
       });
     }
@@ -170,15 +239,20 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
             vistaDatosPaquete: true,
             vistaResumen: false,
             vistaPresupuesto: false,
+            vistaPago: false,
+            vistaPagoRealizado: false
           }
         });
       }
     }
   }
 
-  _onNextGeneratePresupuesto = (event: React.FormEvent<HTMLFormElement>) => {
+  _onNextGeneratePresupuesto = async (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    alert("Vamos a generar un presupuesto");
+    this.props.paqueteActions.generatePresupuesto(
+      this.props.servicios[1].servicio as PaqueteService,
+      this.state.paquete
+    )
     this.setState({
       vistas: {
         vistaDatosRecogida: false,
@@ -186,12 +260,30 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
         vistaDatosPaquete: false,
         vistaResumen: false,
         vistaPresupuesto: true,
+        vistaPago: false,
+        vistaPagoRealizado: false
+      }
+    });
+  }
+
+  _onPagarPresupuesto = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.setState({
+      vistas: {
+        vistaDatosRecogida: false,
+        vistaDatosEntrega: false,
+        vistaDatosPaquete: false,
+        vistaResumen: false,
+        vistaPresupuesto: false,
+        vistaPago: true,
+        vistaPagoRealizado: false
       }
     })
   }
 
   _onCancelForm = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    alert("Aquí debería de salir un confirm y a poder ser un modal, bonito");
     this.setState({
       vistas: {
         vistaDatosRecogida: true,
@@ -199,6 +291,8 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
         vistaDatosPaquete: false,
         vistaResumen: false,
         vistaPresupuesto: false,
+        vistaPago: false,
+        vistaPagoRealizado: false
       },
       paquete: this.paquete_init
     });
@@ -214,6 +308,8 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           vistaDatosPaquete: false,
           vistaResumen: false,
           vistaPresupuesto: false,
+          vistaPago: false,
+          vistaPagoRealizado: false
         }
       })
     } else if (this.state.vistas.vistaDatosRecogida) {
@@ -224,6 +320,8 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           vistaDatosPaquete: false,
           vistaResumen: false,
           vistaPresupuesto: false,
+          vistaPago: false,
+          vistaPagoRealizado: false
         }
       })
     } else if (this.state.vistas.vistaDatosPaquete) {
@@ -233,7 +331,9 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           vistaDatosRecogida: true,
           vistaDatosPaquete: false,
           vistaResumen: false,
-          vistaPresupuesto: false
+          vistaPresupuesto: false,
+          vistaPago: false,
+          vistaPagoRealizado: false
         }
       })
     } else if (this.state.vistas.vistaResumen) {
@@ -243,7 +343,21 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           vistaDatosRecogida: false,
           vistaDatosPaquete: true,
           vistaResumen: false,
-          vistaPresupuesto: false
+          vistaPresupuesto: false,
+          vistaPago: false,
+          vistaPagoRealizado: false
+        }
+      })
+    } else if (this.state.vistas.vistaPresupuesto) {
+      this.setState({
+        vistas: {
+          vistaDatosEntrega: false,
+          vistaDatosRecogida: false,
+          vistaDatosPaquete: true,
+          vistaResumen: false,
+          vistaPresupuesto: false,
+          vistaPago: false,
+          vistaPagoRealizado: false
         }
       })
     } else {
@@ -252,10 +366,57 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           vistaDatosEntrega: false,
           vistaDatosRecogida: false,
           vistaDatosPaquete: false,
-          vistaResumen: true,
-          vistaPresupuesto: false
+          vistaResumen: false,
+          vistaPresupuesto: true,
+          vistaPago: false,
+          vistaPagoRealizado: false
         }
       })
+    }
+  }
+
+  _onPagar = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (this.checkFromsValue()) {
+      await this.props.paqueteActions.pagarPresupuesto(
+        this.props.servicios[1].servicio as ApiService,
+        this.props.presupuesto,
+        this.state.tarjeta
+      );
+
+      if (this.props.pagado) {
+        M.toast({
+          html: this.props.messagePaquete
+        });
+        this.setState({
+          vistas: {
+            vistaDatosEntrega: false,
+            vistaDatosRecogida: false,
+            vistaDatosPaquete: false,
+            vistaResumen: false,
+            vistaPresupuesto: false,
+            vistaPago: false,
+            vistaPagoRealizado: true
+          },
+          paquete: this.paquete_init,
+          tarjeta: this.tarjeta_init
+        });
+      } else {
+        M.toast({
+          html: "El pago no se ha podido realizar correctamente"
+        });
+        this.setState({
+          vistas: {
+            vistaDatosEntrega: false,
+            vistaDatosRecogida: false,
+            vistaDatosPaquete: false,
+            vistaResumen: false,
+            vistaPresupuesto: true,
+            vistaPago: false,
+            vistaPagoRealizado: false
+          }
+        });
+      }
     }
   }
 
@@ -389,7 +550,7 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           </div>
         }
         {
-          (this.state.vistas.vistaResumen) &&
+          (this.state.vistas.vistaResumen || this.state.vistas.vistaPresupuesto) &&
           <div className="container">
             <br />
             <br />
@@ -400,7 +561,7 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
                   Resumen de Orden
               </div>
                 <div className="card-content">
-                  <form onSubmit={this._onNextGeneratePresupuesto}>
+                  <form onSubmit={this._onPagarPresupuesto}>
                     <div className="row">
                       <header className="center">Datos de Recogida</header>
                       <div className="col s12 input-field">
@@ -450,50 +611,18 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
                     <br />
                     <br />
 
-                    <div className="row">
-                      <div className="col s4">
-                        <button className="btn light-blue darken-4" onClick={this._onPreviousForm}>Anterior</button>
+                    {
+                      (this.state.vistas.vistaPresupuesto) &&
+                      <div className="header">
+                        <div className="container">
+                          <div className="row">
+                            <div className="col s12">
+                              <h4>PRESUPUESTO: {`${this.props.presupuesto}`}$</h4>
+                            </div>
+                          </div>
+                        </div>
                       </div>
-                      <div className="col s4">
-                        <button className="btn light-blue darken-4" onClick={this._onCancelForm}>Cancelar</button>
-                      </div>
-                      <div className="col s4">
-                        <button type="submit" className="btn light-blue darken-4">Calcular Presupuesto</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        }
-        {
-          (this.state.vistas.vistaPresupuesto) &&
-          <div className="container">
-            <br />
-            <br />
-            <div className="container">
-              <div className="card">
-                <br />
-                <div className="card-title">
-                  Presupuesto
-              </div>
-                <div className="card-content">
-                  <form onSubmit={this._onCreatePaqueteToProcess}>
-                    <div className="row">
-                      <div className="col s12 input-field">
-                        <input type="text" placeholder="Altura" name="alto" onChange={this.handleChange} value={this.state.paquete.alto} />
-                      </div>
-                      <div className="col s12 input-field">
-                        <input type="text" placeholder="Ancho" name="ancho" onChange={this.handleChange} value={this.state.paquete.ancho} />
-                      </div>
-                      <div className="col s12 input-field">
-                        <input type="text" placeholder="Profundida" name="profundo" onChange={this.handleChange} value={this.state.paquete.profundo} />
-                      </div>
-                      <div className="col s12 input-field">
-                        <input type="text" placeholder="Peso" name="peso" onChange={this.handleChange} value={this.state.paquete.peso} />
-                      </div>
-                    </div>
+                    }
 
                     <div className="row">
                       <div className="col s4">
@@ -502,7 +631,60 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
                       <div className="col s4">
                         <button className="btn light-blue darken-4" onClick={this._onCancelForm}>Cancelar</button>
                       </div>
-                      <div className="col s4">
+                      {
+                        (this.state.vistas.vistaResumen) &&
+                        <div className="col s4">
+                          <button className="btn light-blue darken-4" onClick={this._onNextGeneratePresupuesto}>Calcular Presupuesto</button>
+                        </div>
+                      }
+                      {
+                        (this.state.vistas.vistaPresupuesto) &&
+                        <div className="col s4">
+                          <button type="submit" className="btn light-blue darken-4">Proceder con el Pago</button>
+                        </div>
+                      }
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        {
+          (this.state.vistas.vistaPago) &&
+          <div className="container">
+            <br />
+            <br />
+            <div className="container">
+              <div className="card">
+                <br />
+                <div className="card-title">
+                  Pago
+              </div>
+                <div className="card-content">
+                  <form onSubmit={this._onPagar}>
+                    <div className="row">
+                      <div className="col s12 input-field">
+                        <input type="text" placeholder="Titular" name="titularCuenta" onChange={this.handleTarjetaChange} value={this.state.tarjeta.titularCuenta} />
+                      </div>
+                      <div className="col s12 input-field">
+                        <input type="text" placeholder="Número de cuenta" name="numeroCuenta" onChange={this.handleTarjetaChange} value={this.state.tarjeta.numeroCuenta} />
+                      </div>
+                      <div className="row">
+                        <div className="col s6 input-field">
+                          <input type="text" placeholder="Fecha de Caducidad" name="fechaCaducidad" onChange={this.handleTarjetaChange} value={this.state.tarjeta.fechaCaducidad} />
+                        </div>
+                        <div className="col s6 input-field">
+                          <input type="text" placeholder="Número secreto" name="numeroSecreto" onChange={this.handleTarjetaChange} value={this.state.tarjeta.numeroSecreto} />
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div className="row">
+                      <div className="col s6">
+                        <button className="btn light-blue darken-4" onClick={this._onCancelForm}>Cancelar</button>
+                      </div>
+                      <div className="col s6">
                         <button type="submit" className="btn light-blue darken-4">Pagar</button>
                       </div>
                     </div>
@@ -512,8 +694,54 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
             </div>
           </div>
         }
+        {
+          (this.state.vistas.vistaPagoRealizado) &&
+          <div className="container">
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <div className="container">
+              <div className="header">
+                El pago se ha realizado correctamente
+              </div>
+              <p>Hemos podido realizar el pago correctamente y ya estamos procesando el pedido. En breves minutos le notificaremos
+              sobre la recogida del paquete para su posterior traslado.
+              Utilize el siguiente Identificador
+              <a><Link to={`/seguimiento/${this.props.identificador}`}> {`${this.props.identificador}`} </Link></a>
+              para localizar su paquete en cualquier momento así como el estado en el que se encuetre. Además hemos enviado un recibo del pago a su
+              correo electrónico. Pongase en contacto con nosotros si le surge cualquier duda acerca del proceso
+              de entrega.
+
+              Un saludo y muchas gracias.
+              </p>
+            </div>
+          </div>
+        }
       </div>
     )
   }
 }
 
+
+function mapStateToProps(state: any) {
+  return {
+    presupuesto: state.crudPaqueteReducer.presupuesto,
+    messagePaquete: state.crudPaqueteReducer.messagePaquete,
+    ok: state.crudPaqueteReducer.ok,
+    pagado: state.crudPaqueteReducer.pagado,
+    identificador: state.crudPaqueteReducer.identificador
+  }
+}
+
+function mapDispatchToProps(dispatch: any) {
+  return {
+    paqueteActions: bindActionCreators(paqueteActions, dispatch)
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreatePaquete)

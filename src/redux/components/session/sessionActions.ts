@@ -25,7 +25,6 @@ function requestLoadUser() {
 }
 
 function receiveLoadUser(user: IUser, servicios: service[], paquetes: Paquete[]) {
-  console.log(paquetes);
   return {
     type: LOAD_USER_SUCCESS,
     user: user,
@@ -136,6 +135,12 @@ function loadServicios(tipo: string): service[] {
     tipo: localStorage.getItem('tipo') || ""
   };
   servicios.push(new_service);
+  var paquete_service: service = {
+    servicio: ApiServiceFactory.createApiService("paquete"),
+    tipo: "paquete"
+  }
+  servicios.push(paquete_service);
+
   if (localStorage.getItem('tipo') === 'admin') {
     var new_service: service = {
       servicio: ApiServiceFactory.createApiService("repartidor"),
