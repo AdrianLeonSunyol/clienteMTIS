@@ -36,7 +36,7 @@ export class ApiService implements IService {
       "codigo_seguridad": localStorage.getItem('token') || ""
     }
     return new Promise<any>((resolve, reject) => {
-      resolve(
+      /*resolve(
         {
           id: "1",
           usuario_id: "1",
@@ -57,26 +57,26 @@ export class ApiService implements IService {
           asignado: false,
           id_repartidor: ""
         }
-      )
-      //return fetch("http://localhost:9090/getpaquete", {
-      //  method: 'POST',
-      //  headers: {
-      //    'Content-Type': 'application/json',
-      //  },
-      //  body: JSON.stringify(body)
-      //})
-      //  .then((res) => {
-      //    return res.json();
-      //  })
-      //  .then((res: IPackage) => {
-      //    resolve(res);
-      //  })
-      //  .catch((err) => {
-      //    reject({
-      //      status: 400,
-      //      message: "Error cargando paquete"
-      //    });
-      //  });
+      )*/
+      return fetch("http://localhost:9090/getpaquete", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((res: IPackage) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject({
+            status: 400,
+            message: "Error cargando paquete"
+          });
+        });
     });
   }
 

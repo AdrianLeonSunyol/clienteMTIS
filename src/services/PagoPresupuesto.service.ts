@@ -58,9 +58,9 @@ export class PresupuestoPago extends ApiService {
     var request: IPresupuestoRequest = {
       Paquete: {
         peso: paquete.peso.toString(),
-        alto: (paquete.alto/100).toString(),
-        ancho: (paquete.ancho/100).toString(),
-        profundo: (paquete.profundo/100).toString(),
+        alto: (paquete.alto / 100).toString(),
+        ancho: (paquete.ancho / 100).toString(),
+        profundo: (paquete.profundo / 100).toString(),
         origen: paquete.origen,
         destino: paquete.destino,
         provincia_origen: paquete.provincia_origen,
@@ -72,7 +72,7 @@ export class PresupuestoPago extends ApiService {
       id_usuario: parseInt(paquete.usuario_id),
       codigo_seguridad: localStorage.getItem('token') || ""
     }
-    
+
     return new Promise<any>((resolve, reject) => {
       fetch(this.HTTP_presupuesto, {
         method: 'POST',

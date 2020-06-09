@@ -29,7 +29,7 @@ export class LoginService {
 
   loginUser = (email: string, password: string) => {
     return new Promise<any>((resolve, reject) => {
-      /*fetch(`${this.HTTP_URI}/login`, {
+      fetch(`${this.HTTP_URI}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -49,7 +49,7 @@ export class LoginService {
               paquetes: response.paquetes,
               token: response.codigo_seguridad,
               user: response.usuario,
-              tipo: "usuario" //esto me lo tiene que decir response.usuario.tipo
+              tipo: response.usuario.tipo //esto me lo tiene que decir response.usuario.tipo
             });
           } else {
             reject({
@@ -63,8 +63,8 @@ export class LoginService {
             status: 400,
             message: "Error intentando hacer login!"
           });
-        });*/
-      resolve({
+        });
+      /*resolve({
         status: 200,
         message: "Usuario logueado correctamente",
         paquetes: [
@@ -103,8 +103,8 @@ export class LoginService {
           direccion: "Alicante, Reyes católicos #17 piso 5ºi",
           disponible: "false"
         },
-        tipo: "repartidor"
-      });
+        tipo: "usuario"
+      });*/
     });
   }
 
