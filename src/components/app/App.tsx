@@ -139,6 +139,7 @@ class App extends React.Component<IAppProps, IAppState> {
     return (
       <div>
         <NavBar
+          tipo={this.state.user.tipo}
           isAuthenticated={this.props.isAuthenticated}
           onLogout={this._onLogout}
         />

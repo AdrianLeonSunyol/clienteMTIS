@@ -29,7 +29,7 @@ export class LoginService {
 
   loginUser = (email: string, password: string) => {
     return new Promise<any>((resolve, reject) => {
-      fetch(`${this.HTTP_URI}/login`, {
+      /*fetch(`${this.HTTP_URI}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -49,7 +49,7 @@ export class LoginService {
               paquetes: response.paquetes,
               token: response.codigo_seguridad,
               user: response.usuario,
-              tipo: "usuario"
+              tipo: "usuario" //esto me lo tiene que decir response.usuario.tipo
             });
           } else {
             reject({
@@ -63,7 +63,48 @@ export class LoginService {
             status: 400,
             message: "Error intentando hacer login!"
           });
-        });
+        });*/
+      resolve({
+        status: 200,
+        message: "Usuario logueado correctamente",
+        paquetes: [
+          {
+            id: "1",
+            usuario_id: "1",
+            precio: 1,
+            peso: 1,
+            alto: 1,
+            ancho: 1,
+            profundo: 1,
+            origen: "alicante",
+            destino: "barcelona",
+            provincia_origen: "alicante",
+            provincia_destino: "barcelona",
+            localizacion_actual: "alicante",
+            direccion_origen: "reyes católicos",
+            direccion_destino: "el raval #17",
+            zona: "zona1",
+            estado: Estado.ENTREGADO,
+            asignado: false,
+            id_repartidor: ""
+          }
+        ],
+        token: "token",
+        user: {
+          id: "1",
+          nombre: "adrian",
+          apellidos: "leon",
+          tipo: "repartidor",
+          email: "adrian@gmail.com",
+          fechaNacimiento: "26/07/1996",
+          localidad: "Alicante",
+          provincia: "Alicante",
+          cp: "03003",
+          direccion: "Alicante, Reyes católicos #17 piso 5ºi",
+          disponible: "false"
+        },
+        tipo: "repartidor"
+      });
     });
   }
 

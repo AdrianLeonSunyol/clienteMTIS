@@ -38,11 +38,23 @@ export function crudPaqueteReducer(state: any = crudPaqueteState, action: any) {
         messagePaquete: action.messagePaquete,
         ok: action.ok
       }
+    case CHANGE_PAQUETE_STATE_REQUEST:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
+        ok: action.ok
+      }
     case LOAD_PAQUETE_SUCCESS:
       return {
         ...state,
         messagePaquete: action.messagePaquete,
         paquete: action.paquete,
+        ok: action.ok
+      }
+    case CHANGE_PAQUETE_STATE_SUCCESS:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
         ok: action.ok
       }
     case PRESUPUESTO_REQUEST:
@@ -85,6 +97,12 @@ export function crudPaqueteReducer(state: any = crudPaqueteState, action: any) {
         messagePaquete: action.messagePaquete,
         ok: action.ok,
         pagado: action.pagado
+      }
+    case CHANGE_PAQUETE_STATE_FAILURE:
+      return {
+        ...state,
+        messagePaquete: action.messagePaquete,
+        ok: action.ok
       }
     default:
       return state;

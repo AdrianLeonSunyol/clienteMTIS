@@ -55,13 +55,71 @@ export class UserFactory {
       }
 
       case 'repartidor': {
-        console.log("repartidor");
-        return new Usuario();
+        if (user.password === undefined) {
+          return new Usuario(
+            user.id,
+            user.nombre,
+            user.apellidos,
+            user.email,
+            "repartidor",
+            "",
+            user.direccion,
+            user.fechaNacimiento,
+            user.provincia,
+            user.cp,
+            user.localidad,
+            user.disponible
+          );
+        } else {
+          return new Usuario(
+            user.id,
+            user.nombre,
+            user.apellidos,
+            user.email,
+            "repartidor",
+            user.password,
+            user.direccion,
+            user.fechaNacimiento,
+            user.provincia,
+            user.cp,
+            user.localidad,
+            user.disponible
+          );
+        }
       }
 
       case 'transportista': {
-        console.log("transportista");
-        return new Usuario();
+        if (user.password === undefined) {
+          return new Usuario(
+            user.id,
+            user.nombre,
+            user.apellidos,
+            user.email,
+            "transportista",
+            "",
+            user.direccion,
+            user.fechaNacimiento,
+            user.provincia,
+            user.cp,
+            user.localidad,
+            user.disponible
+          );
+        } else {
+          return new Usuario(
+            user.id,
+            user.nombre,
+            user.apellidos,
+            user.email,
+            "transportista",
+            user.password,
+            user.direccion,
+            user.fechaNacimiento,
+            user.provincia,
+            user.cp,
+            user.localidad,
+            user.disponible
+          );
+        }
       }
 
       default: {

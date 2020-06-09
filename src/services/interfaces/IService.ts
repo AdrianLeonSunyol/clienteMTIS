@@ -6,4 +6,5 @@ export interface IService {
   post(object: any);
   delete(id: string);
   deleteAll();
+  updateEntity(id: string, nextEstado: string);
 }

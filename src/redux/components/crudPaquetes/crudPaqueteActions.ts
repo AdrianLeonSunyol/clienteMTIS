@@ -47,6 +47,14 @@ function requestPago() {
   };
 }
 
+function requestUpdatePaquete() {
+  return {
+    type: CHANGE_PAQUETE_STATE_REQUEST,
+    messagePaquete: "Petición de actualizar estado de paquete",
+    ok: false
+  }
+}
+
 function receiveLoadPaquete(paquete: Paquete) {
   return {
     type: LOAD_PAQUETE_SUCCESS,
@@ -75,6 +83,14 @@ function receivePagarPresupuesto(identificador: number) {
   };
 }
 
+function receiveUpdatePaquete() {
+  return {
+    type: CHANGE_PAQUETE_STATE_SUCCESS,
+    messagePaquete: "Paquete actualizado correctamente",
+    ok: true
+  }
+}
+
 function loadPaqueteError(error: string) {
   return {
     type: LOAD_PAQUETE_FAILURE,
@@ -98,6 +114,14 @@ function loadPagoError(error: string) {
     ok: false,
     pagado: false,
   };
+}
+
+function UpdatePaqueteError(error: string) {
+  return {
+    type: CHANGE_PAQUETE_STATE_FAILURE,
+    messagePaquete: error,
+    ok: false
+  }
 }
 
 
@@ -163,6 +187,19 @@ export function pagarPresupuesto(servicio: PresupuestoPago, pago: IPagoRequest) 
       })
       .catch(err => {
         dispatch(loadPagoError(err.message));
+      });
+  }
+}
+
+export function updatePaquete(servicio: ApiService, idPaquete: string, nextEstado: string) {
+  return async function (dispatch) {
+    dispatch(requestUpdatePaquete());
+    return servicio.updateEntity(idPaquete, nextEstado)
+      .then((response: any) => {
+        dispatch(receiveUpdatePaquete());
+      })
+      .catch((err: any) => {
+        dispatch(UpdatePaqueteError(err.message));
       });
   }
 }

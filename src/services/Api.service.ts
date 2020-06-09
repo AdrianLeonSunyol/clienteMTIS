@@ -36,26 +36,87 @@ export class ApiService implements IService {
       "codigo_seguridad": localStorage.getItem('token') || ""
     }
     return new Promise<any>((resolve, reject) => {
-    return fetch("http://localhost:9090/getpaquete", {
-    method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body)
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((res: IPackage) => {
-          resolve(res);
-      })
-      .catch((err) => {
-        reject({
-          status: 400,
-          message: "Error cargando paquete"
-        });
-      });
+      resolve(
+        {
+          id: "1",
+          usuario_id: "1",
+          precio: 1,
+          peso: 1,
+          alto: 1,
+          ancho: 1,
+          profundo: 1,
+          origen: "alicante",
+          destino: "barcelona",
+          provincia_origen: "alicante",
+          provincia_destino: "barcelona",
+          localizacion_actual: "alicante",
+          direccion_origen: "reyes católicos",
+          direccion_destino: "el raval #17",
+          zona: "zona1",
+          estado: Estado.ENTREGADO,
+          asignado: false,
+          id_repartidor: ""
+        }
+      )
+      //return fetch("http://localhost:9090/getpaquete", {
+      //  method: 'POST',
+      //  headers: {
+      //    'Content-Type': 'application/json',
+      //  },
+      //  body: JSON.stringify(body)
+      //})
+      //  .then((res) => {
+      //    return res.json();
+      //  })
+      //  .then((res: IPackage) => {
+      //    resolve(res);
+      //  })
+      //  .catch((err) => {
+      //    reject({
+      //      status: 400,
+      //      message: "Error cargando paquete"
+      //    });
+      //  });
     });
+  }
+
+  updateEntity = (id: string, nextEstado: string): Promise<any> => {
+    var body = {
+      "id_paquete": id,
+      "estado": nextEstado
+    };
+
+    return new Promise<any>((resolve, reject) => {
+      return fetch("urldeupdatepaquete", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      })
+        .then((response: any) => {
+          return response.json();
+        })
+        .then((res: any) => {
+          if (res.status == 200) {
+            resolve({
+              status: 200,
+              message: "Paquete actualizado correctamente"
+            });
+          } else {
+            reject({
+              status: 400,
+              message: "Error al actualizar el paquete"
+            });
+          }
+        })
+        .catch(err => {
+          reject({
+            status: 400,
+            message: "Error al actualizar el paquete"
+          });
+        });
+    })
   }
 
   post = (object: any) => {

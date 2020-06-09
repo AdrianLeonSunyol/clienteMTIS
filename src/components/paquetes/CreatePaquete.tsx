@@ -1,4 +1,4 @@
-import React, { Component, HtmlHTMLAttributes } from 'react'
+import React, { Component } from 'react'
 import { IPackage } from '../../models/interfaces/IPackage'
 import { Usuario, UserFactory } from '../../models'
 import { Estado } from '../../models/EstadoEnum';
@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as paqueteActions from "../../redux/components/crudPaquetes/crudPaqueteActions";
 import { ApiService, IService } from '../../services';
-import { PresupuestoPago, IPagoRequest, IPagoResponse } from '../../services/PagoPresupuesto.service';
+import { PresupuestoPago, IPagoRequest } from '../../services/PagoPresupuesto.service';
 import { Link } from 'react-router-dom';
 
 
@@ -260,7 +260,7 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
     await this.props.paqueteActions.generatePresupuesto(
       this.props.servicios[1].servicio as PresupuestoPago,
       this.state.paquete
-    ); 
+    );
 
     if (!this.props.ok) {
       M.toast({

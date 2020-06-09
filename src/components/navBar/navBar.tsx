@@ -50,7 +50,10 @@ export class NavBar extends React.Component<INavBarProps, {}> {
               <ul className="right hide-on-med-and-down">
                 <li>{<NavLink to="/" exact>Home</NavLink>}</li>
                 <li>{<NavLink to="/private" exact>Mis paquetes</NavLink>}</li>
-                <li>{<NavLink to="/crear">Crear paquete</NavLink>}</li>
+                {
+                  this.props.tipo == "usuario" &&
+                  <li>{<NavLink to="/crear">Crear paquete</NavLink>}</li>
+                }
                 <li>
                   <button onClick={this.logout} className="btn btn-primary">
                     <Link to="/">LogOut</Link>
