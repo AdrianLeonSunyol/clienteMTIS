@@ -95,8 +95,7 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Fecha Creación</th>
-                      <th>Fecha Entrega</th>
+                      <th>Precio</th>
                       <th>Destino</th>
                       <th>Estado</th>
                       <th></th>
@@ -109,47 +108,52 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                         return (
                           <tr>
                             <td>{paquete.id}</td>
-                            <td>"fechaCreación"</td>
-                            <td>"fecha entrega estimada"</td>
+                            <td>{paquete.precio}</td>
                             <td>{paquete.direccion_destino}</td>
                             <td>{paquete.estado}</td>
-                            <button className="btn waves-effect waves-light #1a237e indigo darken-4">
-                              <Link to={`/seguimiento/${paquete.id}`}>ver detalle</Link>
-                            </button>
-                            {
-                              (this.props.usuario.tipo == "repartidor") &&
-                              <div className="">
-                                <div className="row">
-                                  <div className="row">
-                                    <div className="col s12">
-                                      {
-                                        (paquete.estado == "en_recogidas") &&
-                                        <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaquete(event, paquete) }}>Recoger</button>
-                                      }
-                                      {
-                                        (paquete.estado == "en_reparto") &&
-                                        <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteReparto(event, paquete) }}>Entregar</button>
-                                      }
+                            <div className="row">
+                              <div className="col s6">
+                                <button className="btn waves-effect waves-light #1a237e indigo darken-4">
+                                  <Link to={`/seguimiento/${paquete.id}`}>ver detalle</Link>
+                                </button>
+                              </div>
+                              <div className="col6">
+                                {
+                                  (this.props.usuario.tipo == "repartidor") &&
+                                  <div className="">
+                                    <div className="row">
+                                      <div className="row">
+                                        <div className="col s12">
+                                          {
+                                            (paquete.estado == "en_recogidas") &&
+                                            <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaquete(event, paquete) }}>Recoger</button>
+                                          }
+                                          {
+                                            (paquete.estado == "en_reparto") &&
+                                            <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteReparto(event, paquete) }}>Entregar</button>
+                                          }
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
-                            }
-                            {
-                              (this.props.usuario.tipo == "transportista") &&
-                              <div className="">
-                                <div className="row">
-                                  <div className="row">
-                                    <div className="col s12">
-                                      {
-                                        (paquete.estado == "en_transporte") &&
-                                        <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteTransporte(event, paquete) }}>Entregar</button>
-                                      }
+                                }
+                                {
+                                  (this.props.usuario.tipo == "transportista") &&
+                                  <div className="">
+                                    <div className="row">
+                                      <div className="row">
+                                        <div className="col s12">
+                                          {
+                                            (paquete.estado == "en_transporte") &&
+                                            <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteTransporte(event, paquete) }}>Entregar</button>
+                                          }
+                                        </div>
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
+                                }
                               </div>
-                            }
+                            </div>
                           </tr>
                         );
                       })

@@ -18,9 +18,7 @@ export interface IHomeState {
   paqueteId: string;
 }
 
-export interface IHomeProps {
-
-}
+export interface IHomeProps { }
 
 declare var M: any;
 
@@ -59,14 +57,14 @@ export class HomePage extends React.Component<IHomeProps, IHomeState> {
           <div className="s12">
             <div>
               <form onSubmit={this.localizarPaquete}>
-                <div className="row">
+                <div className="row" style={{ backgroundColor: "white" }}>
                   <div className="input-field col s8">
                     <input id="seguimiento" type="text" className="validate" onChange={this._onHandleChange} />
                     <label htmlFor="seguimiento">ID Seguimiento</label>
                   </div>
                   <br />
                   <div className="col s4 center">
-                    <button type="submit" className="btn waves-effect waves-light #1a237e indigo darken-4">
+                    <button type="submit" className="btn waves-effect waves-light #283593 indigo darken-3">
                       <Link to={`/seguimiento/${this.state.paqueteId}`}>Buscar</Link>
                       <i className="material-icons right">send</i>
                     </button>

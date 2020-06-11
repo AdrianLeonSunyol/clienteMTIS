@@ -163,7 +163,7 @@ export function generatePresupuesto(servicio: PresupuestoPago, paquete: IPackage
           var paquetes: Paquete[] = JSON.parse(localStorage.getItem('paquetes') || "") || [];
           paquete.id = res.id_paquete;
           paquete.precio = parseInt(res.presupuesto);
-          paquete.estado = Estado.PENDIENTE_PAGO;
+          paquete.estado = Estado.EN_RECOGIDAS;
           paquetes.push(paquete);
           localStorage.removeItem('paquetes');
           localStorage.setItem('paquetes', JSON.stringify(paquetes));

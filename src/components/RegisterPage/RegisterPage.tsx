@@ -130,10 +130,10 @@ export class RegisterPage extends React.Component<IRegisterPageProps, IRegisterP
                     </div>
                     <div className="row">
                       <div className="col s6">
-                        <button type="submit" className="btn light-blue darken-4">Registro</button>
+                        <button type="submit" className="btn waves-effect waves-light #283593 indigo darken-3">Registro</button>
                       </div>
                       <div className="col s6">
-                        <li className="btn light-blue darken-4"><a href="/">Cancelar</a></li>
+                        <li className="btn waves-effect waves-light #b71c1c red darken-4" style={{ color: "white" }}><a href="/">Cancelar</a></li>
                       </div>
                     </div>
                   </form>

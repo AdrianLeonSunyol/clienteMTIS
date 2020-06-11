@@ -99,7 +99,7 @@ export class LoginPage extends React.Component<ILoginPageProps, ILoginPageState>
                             </p>
                           </div>
                           <div className="col s6">
-                            <button type="submit" className="btn light-blue darken-4">
+                            <button type="submit" className="btn waves-effect waves-light #283593 indigo darken-3">
                               <Link to="/">Log In</Link>
                               <i className="material-icons right">send</i>
                             </button>

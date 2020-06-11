@@ -26,7 +26,7 @@ export class NavBar extends React.Component<INavBarProps, {}> {
     return (
       <div>
         <nav>
-          <div className="nav-wrapper">
+          <div className="nav-wrapper #283593 indigo darken-3">
             <a className="brand-logo">
               {<NavLink to="/" exact>
                 <div className="container">
