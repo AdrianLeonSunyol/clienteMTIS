@@ -151,24 +151,18 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
                 <br />
                 <div className="row">
                   <div className="col s4 input-field col">
-                    <label>ID: {`${this.state.paquete.origen}`}</label>
+                    <label>ID: {`${this.state.paquete.id}`}</label>
                   </div>
-                  <div className="col s4 input-field col">
-                    <label>Precio: {`${this.state.paquete.origen}`}</label>
-                  </div>
-                  <div className="col s4 input-field col">
-                    <label>Destino: {`${this.state.paquete.origen}`}</label>
+                  <div className="col s6 input-field col">
+                    <label>Precio: {`${this.state.paquete.precio}`}</label>
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col s4 input-field col">
-                    <label>Localiación actual: {`${this.state.paquete.origen}`}</label>
+                  <div className="col s6 input-field col">
+                    <label>Origen: {`${this.state.paquete.direccion_origen}`}</label>
                   </div>
-                  <div className="col s4 input-field col">
-                    <label>Origen: {`${this.state.paquete.origen}`}</label>
-                  </div>
-                  <div className="col s4 input-field col">
-                    <label>Destino: {`${this.state.paquete.destino}`}</label>
+                  <div className="col s6 input-field col">
+                    <label>Destino: {`${this.state.paquete.direccion_destino}`}</label>
                   </div>
                 </div>
                 <br />
