@@ -83,7 +83,7 @@ export class ApiService implements IService {
         })
         .then((res: any) => {
           console.log(res);
-          if (parseInt(res.status) == 200) {
+          if (res.Status == 200) {
             resolve({
               status: 200,
               message: "Paquete actualizado correctamente"
