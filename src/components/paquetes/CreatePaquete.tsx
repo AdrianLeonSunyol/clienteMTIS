@@ -414,7 +414,7 @@ export class CreatePaquete extends Component<ICreatePaqueteProps, ICreatePaquete
           cvv: this.state.tarjeta.numeroSecreto,
           fecha_caducidad: this.state.tarjeta.fechaCaducidad,
           precio: this.props.presupuesto,
-          destino: this.state.paquete.destino
+          destino: this.state.usuario.email
         }
       );
 
