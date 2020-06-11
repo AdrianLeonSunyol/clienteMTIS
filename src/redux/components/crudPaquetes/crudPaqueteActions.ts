@@ -191,10 +191,10 @@ export function pagarPresupuesto(servicio: PresupuestoPago, pago: IPagoRequest) 
   }
 }
 
-export function updatePaquete(servicio: ApiService, idPaquete: string, nextEstado: string) {
+export function updatePaquete(servicio: ApiService, idPaquete: string, accion: string) {
   return async function (dispatch) {
     dispatch(requestUpdatePaquete());
-    return servicio.updateEntity(idPaquete, nextEstado)
+    return servicio.updateEntity(idPaquete, accion)
       .then((response: any) => {
         dispatch(receiveUpdatePaquete());
       })

@@ -19,7 +19,7 @@ export interface ISeguimientoComponentProps {
   estado;
   paqueteActions: {
     loadPaquete(service: IService, idPaquete: string);
-    updatePaquete(service: IService, idPaquete: string, nextEstado: string);
+    updatePaquete(service: IService, idPaquete: string, accion: string);
   }
   match: any;
   ok;
@@ -182,7 +182,6 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
                           this.setState({
                             estadoVisible: this.state.estadoVisible ? false : true
                           });
-
                         }}
                     >
                       {

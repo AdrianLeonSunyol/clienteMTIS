@@ -80,14 +80,19 @@ export class ApiService implements IService {
     });
   }
 
-  updateEntity = (id: string, nextEstado: string): Promise<any> => {
+  updateEntity = (id: string, accion: string): Promise<any> => {
+    var url = "";
+    if (accion == "entregar") {
+      url = "http://";
+    } else {
+      url = "http://;"
+    }
     var body = {
-      "id_paquete": id,
-      "estado": nextEstado
+      "id_paquete": id
     };
 
     return new Promise<any>((resolve, reject) => {
-      return fetch("urldeupdatepaquete", {
+      return fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

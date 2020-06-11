@@ -47,7 +47,7 @@ export interface IPresupuestoResponse {
 
 export class PresupuestoPago extends ApiService {
 
-  HTTP_pago: string = "http://localhost:8080/pago";
+  HTTP_pago: string = "http://localhost:9095/pago";
   HTTP_presupuesto: string = "http://localhost:9090/presupuesto";
 
   constructor(http_uri: string) {
