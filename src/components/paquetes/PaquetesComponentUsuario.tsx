@@ -43,6 +43,44 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
     }
   }
 
+  _onUpdateStatePaqueteReparto = async (event: React.MouseEvent<HTMLButtonElement>, paquete: IPackage) => {
+    event.preventDefault();
+    var servicio: IService = ApiServiceFactory.createApiService("paquete");
+
+    await this.props.paqueteActions.updatePaquete(servicio, paquete.id, "enRepartoTransportista");
+
+    if (this.props.ok) {
+      M.toast({
+        html: "El paquete se ha actualizado y se procesará en central, espere por futuras notificaciones"
+      });
+      var indexof = this.state.paquetes.map(p => { return p.id }).indexOf(paquete.id);
+      var paquetes = this.state.paquetes;
+      paquetes.splice(indexof, 1);
+      this.setState({
+        paquetes: paquetes
+      });
+    }
+  }
+
+  _onUpdateStatePaqueteTransporte = async (event: React.MouseEvent<HTMLButtonElement>, paquete: IPackage) => {
+    event.preventDefault();
+    var servicio: IService = ApiServiceFactory.createApiService("paquete");
+
+    await this.props.paqueteActions.updatePaquete(servicio, paquete.id, "enTransporteTransportista");
+
+    if (this.props.ok) {
+      M.toast({
+        html: "El paquete se ha actualizado y se procesará en central, espere por futuras notificaciones"
+      });
+      var indexof = this.state.paquetes.map(p => { return p.id }).indexOf(paquete.id);
+      var paquetes = this.state.paquetes;
+      paquetes.splice(indexof, 1);
+      this.setState({
+        paquetes: paquetes
+      });
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -87,6 +125,25 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                                       {
                                         (paquete.estado == "en_recogidas") &&
                                         <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaquete(event, paquete) }}>Recoger</button>
+                                      }
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            }
+                            {
+                              (this.props.usuario.tipo == "transportista") &&
+                              <div className="">
+                                <div className="row">
+                                  <div className="row">
+                                    <div className="col s12">
+                                      {
+                                        (paquete.estado == "en_reparto") &&
+                                        <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteReparto(event, paquete) }}>Entregar</button>
+                                      }
+                                      {
+                                        (paquete.estado == "en_transporte") &&
+                                        <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteTransporte(event, paquete) }}>Entregar</button>
                                       }
                                     </div>
                                   </div>

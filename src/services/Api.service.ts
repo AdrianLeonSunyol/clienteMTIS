@@ -62,8 +62,10 @@ export class ApiService implements IService {
     var url = "";
     if (accion == "enRecogerRepartidor") {
       url = "http://localhost:9093/recoger";
+    } else if (accion == "enRepartoTransportista") {
+      url = "http://localhost:9094/reparto;"
     } else {
-      url = "http://;"
+      url = "http://localhost:9097/transporte"
     }
     var body = {
       "id_paquete": id
