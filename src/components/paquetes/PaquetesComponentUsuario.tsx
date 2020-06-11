@@ -119,40 +119,28 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                                 </button>
                               </div>
                             </div>
-                            <div>
+                            <div className="row">
                               <div className="col6">
                                 {
                                   (this.props.usuario.tipo == "repartidor") &&
-                                  <div className="row">
-                                    <div className="row">
-                                      <div className="col s12">
-                                        {
-                                          (paquete.estado == "en_recogidas") &&
-                                          <button className="btn #d81b60 pink darken-1" onClick={(event: any) => { this._onUpdateStatePaquete(event, paquete) }}>Recoger</button>
-                                        }
-                                        {
-                                          (paquete.estado == "en_reparto") &&
-                                          <button className="btn #d81b60 pink darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteReparto(event, paquete) }}>Entregar</button>
-                                        }
-                                      </div>
-                                    </div>
+                                  <div>
+                                    {
+                                      (paquete.estado == "en_recogidas") &&
+                                      <button className="btn #d81b60 pink darken-1" onClick={(event: any) => { this._onUpdateStatePaquete(event, paquete) }}>Recoger</button>
+                                    }
+                                    {
+                                      (paquete.estado == "en_reparto") &&
+                                      <button className="btn #d81b60 pink darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteReparto(event, paquete) }}>Entregar</button>
+                                    }
                                   </div>
                                 }
-                              </div>
-                              <div>
                                 {
                                   (this.props.usuario.tipo == "transportista") &&
-                                  <div className="">
-                                    <div className="row">
-                                      <div className="row">
-                                        <div className="col s12">
-                                          {
-                                            (paquete.estado == "en_transporte") &&
-                                            <button className="btn #d81b60 pink darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteTransporte(event, paquete) }}>Entregar</button>
-                                          }
-                                        </div>
-                                      </div>
-                                    </div>
+                                  <div>
+                                    {
+                                      (paquete.estado == "en_transporte") &&
+                                      <button className="btn #d81b60 pink darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteTransporte(event, paquete) }}>Entregar</button>
+                                    }
                                   </div>
                                 }
                               </div>
