@@ -170,7 +170,7 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
                 <br />
                 <div className="row">
                   <div className="col s12">
-                    <button className="btn"
+                    <button className="btn #283593 indigo darken-3"
                       onClick={
                         (event: any) => {
                           event.preventDefault();
@@ -206,7 +206,7 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
                                       this.state.estados.map((estado: any): JSX.Element => {
                                         return (
                                           <div className="col s3">
-                                            <div className="btn">{estado}</div>
+                                            <div className="btn #283593 indigo darken-3">{estado}</div>
                                           </div>
                                         );
                                       })
@@ -223,9 +223,6 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
                       </div>
                     }
                   </div>
-                </div>
-                <div className="row">
-
                 </div>
               </form>
             </div>
