@@ -118,8 +118,6 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                                   <Link to={`/seguimiento/${paquete.id}`}>ver detalle</Link>
                                 </button>
                               </div>
-                            </div>
-                            <div className="row">
                               <div className="col6">
                                 {
                                   (this.props.usuario.tipo == "repartidor") &&
