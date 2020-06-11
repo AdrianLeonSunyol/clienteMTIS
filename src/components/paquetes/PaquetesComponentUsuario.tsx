@@ -100,6 +100,7 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                       <th>Estado</th>
                       <th></th>
                       <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
