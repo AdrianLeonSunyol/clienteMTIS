@@ -64,7 +64,7 @@ export class HomePage extends React.Component<IHomeProps, IHomeState> {
                   </div>
                   <br />
                   <div className="col s4 center">
-                    <button type="submit" className="btn waves-effect waves-light #283593 indigo darken-3">
+                    <button type="submit" className="btn #283593 indigo darken-3">
                       <Link to={`/seguimiento/${this.state.paqueteId}`}>Buscar</Link>
                       <i className="material-icons right">send</i>
                     </button>

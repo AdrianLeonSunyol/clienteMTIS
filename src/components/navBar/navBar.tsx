@@ -55,7 +55,7 @@ export class NavBar extends React.Component<INavBarProps, {}> {
                   <li>{<NavLink to="/crear">Crear paquete</NavLink>}</li>
                 }
                 <li>
-                  <button onClick={this.logout} className="btn btn-primary #d81b60 pink darken-1">
+                  <button onClick={this.logout} className="btn #d81b60 pink darken-1">
                     <Link to="/">LogOut</Link>
                   </button>
                 </li>
