@@ -47,7 +47,7 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
     event.preventDefault();
     var servicio: IService = ApiServiceFactory.createApiService("paquete");
 
-    await this.props.paqueteActions.updatePaquete(servicio, paquete.id, "enRepartoTransportista");
+    await this.props.paqueteActions.updatePaquete(servicio, paquete.id, "enRepartoRepartidor");
 
     if (this.props.ok) {
       M.toast({
@@ -126,6 +126,10 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                                         (paquete.estado == "en_recogidas") &&
                                         <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaquete(event, paquete) }}>Recoger</button>
                                       }
+                                      {
+                                        (paquete.estado == "en_reparto") &&
+                                        <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteReparto(event, paquete) }}>Entregar</button>
+                                      }
                                     </div>
                                   </div>
                                 </div>
@@ -137,10 +141,6 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                                 <div className="row">
                                   <div className="row">
                                     <div className="col s12">
-                                      {
-                                        (paquete.estado == "en_reparto") &&
-                                        <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteReparto(event, paquete) }}>Entregar</button>
-                                      }
                                       {
                                         (paquete.estado == "en_transporte") &&
                                         <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaqueteTransporte(event, paquete) }}>Entregar</button>
