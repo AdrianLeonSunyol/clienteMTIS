@@ -34,14 +34,13 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
       M.toast({
         html: "El paquete se ha actualizado y se procesará en central, espere por futuras notificaciones"
       });
+      var indexof = this.state.paquetes.map(p => { return p.id }).indexOf(paquete.id);
+      var paquetes = this.state.paquetes;
+      paquetes.splice(indexof, 1);
+      this.setState({
+        paquetes: paquetes
+      });
     }
-
-    var indexof = this.state.paquetes.map(p => { return p.id }).indexOf(paquete.id);
-    var paquetes = this.state.paquetes;
-    paquetes.splice(indexof, 1);
-    this.setState({
-      paquetes: paquetes
-    });
   }
 
   render() {

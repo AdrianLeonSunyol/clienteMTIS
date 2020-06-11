@@ -78,9 +78,11 @@ export class ApiService implements IService {
         body: JSON.stringify(body)
       })
         .then((response: any) => {
+          console.log(response);
           return response.json();
         })
         .then((res: any) => {
+          console.log(res);
           if (res.status == 200) {
             resolve({
               status: 200,
