@@ -1,7 +1,7 @@
 export enum Estado {
   EN_RECOGIDAS = "en_recogidas",
   SIN_ASIGNAR = "sin_asignar",
-  COLA_RECOGIDAS = "cola_recogidas",
+  COLA_RECOGIDAS = "en_recogidas",
   RECOGIDO = "recogida",
   COLA_ENTREGA_TRANSPORTE = "cola_entrega_transporte",
   EN_TRANSPORTE = "en_transporte",

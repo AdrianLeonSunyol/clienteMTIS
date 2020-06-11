@@ -1,5 +1,5 @@
 import React from 'react'
-import { IPrivatePageProps } from './IPrivatePageProps'
+import { IPrivatePageProps } from './IPrivatePageProps';
 import PaquetesComponentUsuario from '../paquetes/PaquetesComponentUsuario';
 import { Paquete } from '../../models/PaqueteModel';
 import { bindActionCreators } from 'redux';
@@ -26,6 +26,7 @@ class PrivatePage extends React.Component<IPrivatePageProps, IPrivateState> {
         <PaquetesComponentUsuario
           usuario={this.props.user}
           paquetes={this.props.paquetes}
+          servicios={this.props.servicios}
         />
       </div>
     )

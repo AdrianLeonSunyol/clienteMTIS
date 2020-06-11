@@ -36,28 +36,6 @@ export class ApiService implements IService {
       "codigo_seguridad": localStorage.getItem('token') || ""
     }
     return new Promise<any>((resolve, reject) => {
-      /*resolve(
-        {
-          id: "1",
-          usuario_id: "1",
-          precio: 1,
-          peso: 1,
-          alto: 1,
-          ancho: 1,
-          profundo: 1,
-          origen: "alicante",
-          destino: "barcelona",
-          provincia_origen: "alicante",
-          provincia_destino: "barcelona",
-          localizacion_actual: "alicante",
-          direccion_origen: "reyes católicos",
-          direccion_destino: "el raval #17",
-          zona: "zona1",
-          estado: Estado.ENTREGADO,
-          asignado: false,
-          id_repartidor: ""
-        }
-      )*/
       return fetch("http://localhost:9090/getpaquete", {
         method: 'POST',
         headers: {
@@ -82,8 +60,8 @@ export class ApiService implements IService {
 
   updateEntity = (id: string, accion: string): Promise<any> => {
     var url = "";
-    if (accion == "entregar") {
-      url = "http://";
+    if (accion == "enRecogerRepartidor") {
+      url = "http://localhost:9093/recoger";
     } else {
       url = "http://;"
     }

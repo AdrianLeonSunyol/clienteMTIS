@@ -4,14 +4,44 @@ import { IPaqueteComponentProps } from './IPaqueteComponentProps'
 import { IPaqueteComponentState } from './IPaqueteComponentState'
 import { Paquete } from '../../models/PaqueteModel';
 import { Link } from 'react-router-dom';
+import { bindActionCreators } from 'redux';
 
-export default class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaqueteComponentState> {
+import * as paqueteActions from "../../redux/components/crudPaquetes/crudPaqueteActions";
+import { connect } from 'react-redux';
+import { IService, ApiService } from '../../services';
+import { ApiServiceFactory } from '../../services/ApiServiceFactory';
+import { IPackage } from '../../models/interfaces/IPackage';
+import { Estado } from '../../models/EstadoEnum';
+
+declare var M: any;
+
+class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaqueteComponentState> {
   constructor(props: IPaqueteComponentProps) {
     super(props);
     this.state = {
       usuario: this.props.usuario,
       paquetes: this.props.paquetes
     };
+  }
+
+  _onUpdateStatePaquete = async (event: React.MouseEvent<HTMLButtonElement>, paquete: IPackage) => {
+    event.preventDefault();
+    var servicio: IService = ApiServiceFactory.createApiService("paquete");
+
+    await this.props.paqueteActions.updatePaquete(servicio, paquete.id, "enRecogerRepartidor");
+
+    if (this.props.ok) {
+      M.toast({
+        html: "El paquete se ha actualizado y se procesará en central, espere por futuras notificaciones"
+      });
+    }
+
+    var indexof = this.state.paquetes.map(p => { return p.id }).indexOf(paquete.id);
+    var paquetes = this.state.paquetes;
+    paquetes.splice(indexof, 1);
+    this.setState({
+      paquetes: paquetes
+    });
   }
 
   render() {
@@ -33,6 +63,7 @@ export default class PaquetesComponentUsuario extends Component<IPaqueteComponen
                       <th>Destino</th>
                       <th>Estado</th>
                       <th></th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -48,6 +79,21 @@ export default class PaquetesComponentUsuario extends Component<IPaqueteComponen
                             <button className="btn waves-effect waves-light #1a237e indigo darken-4">
                               <Link to={`/seguimiento/${paquete.id}`}>ver detalle</Link>
                             </button>
+                            {
+                              (this.props.usuario.tipo == "repartidor") &&
+                              <div className="">
+                                <div className="row">
+                                  <div className="row">
+                                    <div className="col s12">
+                                      {
+                                        (paquete.estado == "en_recogidas") &&
+                                        <button className="btn center #ffb300 amber darken-1" onClick={(event: any) => { this._onUpdateStatePaquete(event, paquete) }}>Recoger</button>
+                                      }
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            }
                           </tr>
                         );
                       })
@@ -62,3 +108,22 @@ export default class PaquetesComponentUsuario extends Component<IPaqueteComponen
     )
   }
 }
+
+function mapStateToProps(state: any) {
+  return {
+    messagePaquete: state.crudPaqueteReducer.messagePaquete,
+    ok: state.crudPaqueteReducer.ok,
+    paquete: state.crudPaqueteReducer.paquete
+  };
+}
+
+function mapDispatchToProps(dispatch: any) {
+  return {
+    paqueteActions: bindActionCreators(paqueteActions, dispatch)
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PaquetesComponentUsuario)

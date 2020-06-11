@@ -61,6 +61,7 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
   }
 
   estadosPaquete = [
+    "en_recogidas",
     "sin_asignar",
     "pendiente_pago",
     "cola_recogidas",
@@ -216,19 +217,7 @@ class SeguimientoComponent extends Component<ISeguimientoComponentProps, ISeguim
                             </div>
                             <br />
                             <br />
-                            {
-                              (this.state.currentUser.tipo == "repartidor" || this.state.currentUser.tipo == "transportista") &&
-                              <div className="">
-                                <div className="row">
 
-                                  <div className="row">
-                                    <div className="col s12">
-                                      <button className="btn center #ffb300 amber darken-1" onClick={this._onUpdateStatePaquete}>Actualizar Estado</button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            }
                           </div>
                         </div>
                       </div>
