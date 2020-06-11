@@ -113,7 +113,7 @@ class PaquetesComponentUsuario extends Component<IPaqueteComponentProps, IPaquet
                             <td>{paquete.estado}</td>
                             <div className="row">
                               <div className="col s6">
-                                <button className="btn waves-effect waves-light #d81b60 pink darken-1">
+                                <button className="btn waves-effect waves-light #283593 indigo darken-3">
                                   <Link to={`/seguimiento/${paquete.id}`}>ver detalle</Link>
                                 </button>
                               </div>
